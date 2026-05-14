@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>회원가입 — NextPartner</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 500:'#ff7f65', 400:'#ff9a7a', 300:'#ffb89f', 100:'#ffe3dc', 50:'#fff4f1' },
+            neutral: { 900:'#1a1a1a', 800:'#333333', 600:'#666666', 400:'#999999', 200:'#e5e5e5', 100:'#f0f0f0', 50:'#f5f5f5', 0:'#ffffff' },
+            'warm-grey': { 300:'#e5d1c9', 200:'#ecded9', 100:'#f5edeb', 50:'#f8f4f3', 25:'#fbf9f9' },
+            success: { 500:'#4caf50', 100:'#e8f5e9' },
+            warning: { 500:'#ff9800', 100:'#fff3e0' },
+            error:   { 500:'#f44336', 100:'#ffebee' },
+            info:    { 500:'#2196f3', 100:'#e3f2fd' },
+          },
+          spacing: { 1:'4px', 2:'8px', 3:'12px', 4:'16px', 5:'20px', 6:'24px', 8:'32px', 10:'40px', 12:'48px', 16:'64px' },
+          borderRadius: { button:'8px', card:'8px', search:'24px', badge:'4px', pill:'999px' },
+          fontFamily: { base: ['Pretendard Variable','Pretendard','-apple-system','BlinkMacSystemFont','Apple SD Gothic Neo','sans-serif'] },
+          maxWidth: { content:'1212px' },
+        },
+      },
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      *, *::before, *::after { box-sizing: border-box; }
+      body { @apply font-base text-neutral-900 bg-neutral-50; }
+    }
+    @layer components {
+      .np-btn { @apply inline-flex items-center justify-center gap-2 font-base font-bold rounded-button border border-transparent cursor-pointer transition-all duration-[120ms] ease-out whitespace-nowrap relative select-none; }
+      .np-btn:focus-visible { @apply outline-none shadow-[0_0_0_3px_rgba(255,184,159,0.35)]; }
+      .np-btn:disabled { @apply opacity-40 cursor-not-allowed pointer-events-none; }
+      .np-btn-sm  { @apply h-10 px-4 text-lg; }
+      .np-btn-md  { @apply h-12 px-5 text-xl; }
+      .np-btn-lg  { @apply h-14 px-6 text-2xl; }
+      .np-btn-primary   { @apply bg-primary-500 text-neutral-0 hover:bg-primary-400 active:bg-primary-300; }
+      .np-btn-secondary { @apply bg-neutral-0 text-primary-500 border-primary-500 hover:bg-primary-50 active:bg-primary-100; }
+      .np-btn-ghost     { @apply bg-transparent text-primary-500 hover:bg-primary-50 active:bg-primary-100; }
+      .np-btn-grey      { @apply bg-neutral-100 text-neutral-400 hover:bg-neutral-200 active:bg-neutral-200; }
+      .np-btn-grey-stroke { @apply bg-neutral-0 text-neutral-800 border border-neutral-200 hover:bg-neutral-50 active:bg-neutral-100; }
+
+      .np-textfield-wrap  { @apply flex flex-col gap-2; }
+      .np-textfield-label { @apply text-lg font-semibold text-neutral-800; }
+      .np-textfield {
+        @apply w-full h-14 px-4 font-base text-xl text-neutral-900 bg-neutral-0 border border-neutral-200 rounded-button outline-none transition-all duration-[120ms] ease-out placeholder:text-neutral-400;
+      }
+      .np-textfield:focus { @apply border-primary-500 shadow-[0_0_0_3px_rgba(255,184,159,0.25)]; }
+      .np-textfield-error { @apply border-error-500; }
+      .np-textfield-error:focus { @apply shadow-[0_0_0_3px_rgba(244,67,54,0.15)]; }
+      .np-textfield-hint       { @apply text-base text-neutral-400 mt-1; }
+      .np-textfield-hint-error { @apply text-base text-error-500 mt-1; }
+      .np-textfield:disabled   { @apply bg-neutral-50 text-neutral-400 cursor-not-allowed; }
+
+      .np-textfield-password-wrap { @apply relative; }
+      .np-textfield-password-wrap .np-textfield { padding-right: 3.5rem; }
+      .np-textfield-pw-toggle {
+        @apply absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 text-neutral-400 rounded-button cursor-pointer hover:text-neutral-700 transition-colors duration-[120ms] ease-out bg-transparent border-none select-none;
+      }
+
+      .np-checkbox       { @apply inline-flex items-center gap-3 cursor-pointer select-none; }
+      .np-checkbox-input {
+        @apply appearance-none w-6 h-6 shrink-0 rounded-badge border-2 border-neutral-200 bg-neutral-0 cursor-pointer transition-all duration-[120ms] ease-out;
+        background-repeat: no-repeat; background-position: center; background-size: 14px;
+      }
+      .np-checkbox-input:checked {
+        @apply bg-primary-500 border-primary-500;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+      }
+      .np-checkbox-input:focus-visible { @apply outline-none shadow-[0_0_0_3px_rgba(255,184,159,0.35)]; }
+      .np-checkbox-label { @apply text-lg text-neutral-800; }
+
+      .np-radio       { @apply inline-flex items-center gap-3 cursor-pointer select-none; }
+      .np-radio-input {
+        @apply appearance-none w-6 h-6 shrink-0 rounded-full border-2 border-neutral-200 bg-neutral-0 cursor-pointer transition-all duration-[120ms] ease-out;
+        background-repeat: no-repeat; background-position: center;
+      }
+      .np-radio-input:checked {
+        @apply border-primary-500;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%23ff7f65'/%3E%3C/svg%3E");
+      }
+      .np-radio-input:focus-visible { @apply outline-none shadow-[0_0_0_3px_rgba(255,184,159,0.35)]; }
+      .np-radio-label { @apply text-lg text-neutral-800; }
+
+      details.np-dropdown { @apply relative inline-block; }
+      details.np-dropdown > summary { list-style: none; }
+      details.np-dropdown > summary::-webkit-details-marker { display: none; }
+      .np-dropdown-chevron { @apply shrink-0 transition-transform duration-[120ms] ease-out; }
+      details.np-dropdown[open] .np-dropdown-chevron { @apply rotate-180; }
+      .np-dropdown-menu {
+        @apply absolute left-0 top-full mt-2 min-w-full z-20 bg-neutral-0 border border-neutral-200 rounded-button shadow-[0_4px_16px_rgba(0,0,0,0.10)] overflow-hidden py-1;
+      }
+      .np-dropdown-item {
+        @apply flex items-center gap-3 px-5 py-3 font-base text-lg text-neutral-800 cursor-pointer transition-colors duration-[120ms] ease-out hover:bg-neutral-50 active:bg-neutral-100;
+      }
+      .np-dropdown-item.selected { @apply text-primary-500 font-semibold bg-primary-50; }
+      .np-dropdown-item.disabled { @apply text-neutral-400 cursor-not-allowed pointer-events-none; }
+      .np-dropdown-divider { @apply border-t border-neutral-100 my-1; }
+
+      .np-chip {
+        @apply inline-flex items-center gap-1 h-10 px-4 font-base text-lg font-medium bg-neutral-100 text-neutral-800 rounded-pill border border-transparent cursor-pointer transition-all duration-[120ms] ease-out select-none;
+      }
+      .np-chip:hover  { @apply bg-neutral-200; }
+      .np-chip-active { @apply bg-primary-50 text-primary-500 border-primary-500; }
+      .np-chip-active:hover { @apply bg-primary-100; }
+
+      .np-badge { @apply inline-flex items-center justify-center px-3 h-7 font-base text-base font-semibold rounded-badge; }
+      .np-badge-primary { @apply bg-primary-500 text-neutral-0; }
+      .np-badge-neutral { @apply bg-neutral-200 text-neutral-800; }
+      .np-badge-success { @apply bg-success-100 text-success-500; }
+      .np-badge-warning { @apply bg-warning-100 text-warning-500; }
+      .np-badge-error   { @apply bg-error-100 text-error-500; }
+      .np-badge-info    { @apply bg-info-100 text-info-500; }
+
+      .np-divider       { @apply w-full border-none border-t border-neutral-200 my-0; }
+      .np-divider-thick { @apply w-full h-2 bg-neutral-100 border-none; }
+
+      .np-header       { @apply w-full bg-neutral-0 border-b border-neutral-200; }
+      .np-header-inner { @apply max-w-content mx-auto px-4 md:px-6 flex items-center h-16 md:h-20 gap-4 md:gap-8; }
+      .np-header-nav     { @apply hidden md:flex items-center gap-1 ml-auto; }
+      .np-header-actions { @apply hidden md:flex items-center gap-2 ml-4; }
+      .np-header-menu-btn {
+        @apply ml-auto flex md:hidden items-center justify-center w-10 h-10 text-neutral-800 rounded-button cursor-pointer hover:bg-neutral-50 transition-colors duration-[120ms] ease-out;
+      }
+      .np-nav-link     { @apply px-3 py-2 text-xl text-neutral-500 font-medium rounded-button cursor-pointer hover:text-neutral-900 hover:bg-neutral-50 transition-colors duration-[120ms] ease-out; }
+      .np-nav-link-job { @apply px-3 py-2 text-xl font-bold text-neutral-900 rounded-button cursor-pointer hover:text-primary-500 hover:bg-primary-50 transition-colors duration-[120ms] ease-out; }
+      .np-nav-link.active     { @apply text-primary-500 bg-primary-50; }
+      .np-nav-link-job.active { @apply text-primary-500 bg-primary-50; }
+      .np-header-divider { @apply w-px h-4 bg-neutral-200 mx-1; }
+
+      .np-bottom-nav {
+        @apply w-full bg-neutral-0 border-t border-neutral-200 flex items-stretch;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .np-bottom-nav-item {
+        @apply flex-1 flex flex-col items-center justify-center gap-1 py-2 text-neutral-400 cursor-pointer border-none bg-transparent transition-colors duration-[120ms] ease-out;
+      }
+      .np-bottom-nav-item.active { @apply text-primary-500; }
+      .np-bottom-nav-item:hover  { @apply text-neutral-600; }
+      .np-bottom-nav-label { @apply text-xs font-medium; }
+
+      .np-modal-overlay { @apply fixed inset-0 flex items-center justify-center z-50 px-4; background: rgba(26,26,26,0.5); }
+      .np-modal         { @apply bg-neutral-0 rounded-card w-full max-w-md shadow-[0_8px_32px_rgba(0,0,0,0.18)] flex flex-col; }
+      .np-modal-header  { @apply flex items-center justify-between px-6 pt-6 pb-4; }
+      .np-modal-title   { @apply text-xl font-bold text-neutral-900; }
+      .np-modal-body    { @apply px-6 pb-4 text-lg text-neutral-600 leading-relaxed; }
+      .np-modal-footer  { @apply flex gap-3 px-6 pb-6 pt-2; }
+
+      .np-footer         { @apply w-full bg-neutral-0 border-t border-neutral-200 px-4 md:px-8 py-8 md:py-10; }
+      .np-footer-inner   { @apply max-w-content mx-auto flex flex-col gap-8 md:flex-row md:justify-between md:gap-12; }
+      .np-footer-tagline { @apply text-lg font-bold text-neutral-900 mb-3; }
+      .np-footer-info    { @apply text-sm text-neutral-500 leading-relaxed; }
+      .np-footer-section-title { @apply text-base font-bold text-neutral-900 mb-4; }
+      .np-footer-link    { @apply text-base text-neutral-500 cursor-pointer block mb-3 hover:text-neutral-900 transition-colors duration-[120ms] ease-out; }
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="font-base text-neutral-900 bg-neutral-50 pb-16 md:pb-0">
+
+<!-- ══════════════════════════════════════
+     헤더
+══════════════════════════════════════ -->
+<header class="np-header sticky top-0 z-50">
+  <div class="np-header-inner">
+    <a href="#" class="flex items-center gap-2 shrink-0">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <path d="M16 2L28.7 9.5V24.5L16 32L3.3 24.5V9.5L16 2Z" fill="#ff7f65"/>
+        <path d="M11 10h2.5l5 12H16l-1.2-3H10l-1.2 3H6.5L11 10Zm2.8 7-1.8-4.5L10.2 17h3.6Z" fill="white"/>
+      </svg>
+      <span class="text-xl font-bold text-neutral-900 tracking-tight">NextPartner</span>
+    </a>
+    <nav class="np-header-nav">
+      <a class="np-nav-link" href="#">서비스소개</a>
+      <div class="np-header-divider"></div>
+      <a class="np-nav-link-job" href="#">채용공고</a>
+      <a class="np-nav-link-job" href="#">프로젝트</a>
+      <a class="np-nav-link-job" href="#">이력서</a>
+    </nav>
+    <div class="np-header-actions">
+      <a href="#" class="np-btn np-btn-ghost np-btn-md">로그인</a>
+    </div>
+    <button class="np-header-menu-btn" aria-label="메뉴">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     회원가입 메인 컨텐츠
+══════════════════════════════════════ -->
+<div class="w-full max-w-content mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
+
+  <!-- 페이지 제목 (모바일) -->
+  <div class="md:hidden mb-6">
+    <h1 class="text-2xl font-bold text-neutral-900">회원가입</h1>
+    <p class="text-base text-neutral-600 mt-1 leading-relaxed">입력하신 정보는 AI 이력서에 바로 반영됩니다</p>
+  </div>
+
+  <!-- 모바일 스텝 진행 바 -->
+  <div class="md:hidden mb-6">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-base font-semibold text-neutral-800" id="mobile-step-label">1단계 · 기본 정보</span>
+      <span class="text-base text-neutral-400" id="mobile-step-count">5단계 중 1단계</span>
+    </div>
+    <div class="w-full h-2 bg-neutral-200 rounded-pill overflow-hidden">
+      <div class="h-full bg-primary-500 rounded-pill transition-all duration-300" id="mobile-progress-bar" style="width:20%"></div>
+    </div>
+  </div>
+
+  <!-- 2열 레이아웃: 사이드패널 + 폼 -->
+  <div class="flex flex-col md:flex-row gap-6 lg:gap-10 items-start">
+
+    <!-- ── 좌측 사이드 패널 (md 이상) ── -->
+    <aside class="hidden md:flex flex-col gap-3 w-56 lg:w-64 shrink-0 sticky top-24">
+
+      <!-- 서비스 설명 -->
+      <div class="bg-primary-50 rounded-card p-5 mb-2">
+        <p class="text-base font-bold text-primary-500 mb-1">이력서 자동 반영</p>
+        <p class="text-base text-neutral-600 leading-relaxed">입력하신 정보는 AI 이력서에 바로 반영됩니다. 정확하게 입력할수록 더 좋은 공고를 추천받을 수 있어요.</p>
+      </div>
+
+      <!-- 스텝 목록 -->
+      <nav class="flex flex-col gap-1" aria-label="회원가입 단계">
+        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="1">
+          <span class="step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120">1</span>
+          <div class="flex flex-col">
+            <span class="text-base font-bold">기본 정보</span>
+            <span class="step-desc text-sm text-neutral-400">이름·이메일·비밀번호</span>
+          </div>
+        </button>
+        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="2">
+          <span class="step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120">2</span>
+          <div class="flex flex-col">
+            <span class="text-base font-bold">학력</span>
+            <span class="step-desc text-sm text-neutral-400">최종학력·전공</span>
+          </div>
+        </button>
+        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="3">
+          <span class="step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120">3</span>
+          <div class="flex flex-col">
+            <span class="text-base font-bold">경력</span>
+            <span class="step-desc text-sm text-neutral-400">회사·직무·재직기간</span>
+          </div>
+        </button>
+        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="4">
+          <span class="step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120">4</span>
+          <div class="flex flex-col">
+            <span class="text-base font-bold">자격증</span>
+            <span class="step-desc text-sm text-neutral-400">보유 자격증</span>
+          </div>
+        </button>
+        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="5">
+          <span class="step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120">5</span>
+          <div class="flex flex-col">
+            <span class="text-base font-bold">희망 조건</span>
+            <span class="step-desc text-sm text-neutral-400">직무·지역·연봉</span>
+          </div>
+        </button>
+      </nav>
+
+      <!-- 진행률 -->
+      <div class="mt-2 px-1">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm text-neutral-400" id="sidebar-progress-text">20% 완료</span>
+          <span class="text-sm text-neutral-400" id="sidebar-remain-text">4단계 남았습니다</span>
+        </div>
+        <div class="w-full h-2 bg-neutral-200 rounded-pill overflow-hidden">
+          <div class="h-full bg-primary-500 rounded-pill transition-all duration-300" id="sidebar-progress-bar" style="width:20%"></div>
+        </div>
+      </div>
+
+      <!-- 맥락 메시지 -->
+      <p class="text-sm text-neutral-500 leading-relaxed px-1 mt-1" id="sidebar-context-msg">
+        기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.
+      </p>
+    </aside>
+
+    <!-- ── 우측 폼 영역 ── -->
+    <div class="flex-1 min-w-0">
+
+      <!-- ════════════════ STEP 1: 기본 정보 ════════════════ -->
+      <div class="step-panel" id="step-1">
+        <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 md:p-8">
+
+          <!-- 이력서 연동 안내 배너 -->
+          <div class="flex items-start gap-3 bg-primary-50 border border-primary-100 rounded-button px-4 py-3 mb-6" id="banner-step1">
+            <i data-lucide="file-text" style="width:20px;height:20px;" class="text-primary-500 shrink-0 mt-0.5"></i>
+            <p class="text-base text-neutral-700 leading-relaxed flex-1">이 정보는 이력서 <strong class="text-primary-500">기본 정보</strong>란에 자동 반영됩니다</p>
+            <button onclick="closeBanner('banner-step1')" class="text-neutral-400 hover:text-neutral-600 shrink-0 transition-colors" aria-label="닫기">
+              <i data-lucide="x" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+
+          <h2 class="text-2xl font-bold text-neutral-900 mb-1">기본 정보 입력</h2>
+          <p class="text-base text-neutral-400 mb-2">* 표시 항목은 필수입니다</p>
+          <div class="np-divider mb-6"></div>
+
+          <!-- 그룹 1: 개인 식별 정보 -->
+          <p class="text-base font-bold text-neutral-500 uppercase tracking-widest mb-4">개인 정보</p>
+          <div class="flex flex-col gap-5 mb-6">
+
+            <!-- 이름 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="name">이름 *</label>
+              <input type="text" id="name" name="name" class="np-textfield" placeholder="홍길동" autocomplete="name" />
+            </div>
+
+            <!-- 성별 -->
+            <div class="flex flex-col gap-2">
+              <span class="np-textfield-label">성별 *</span>
+              <div class="flex gap-6">
+                <label class="np-radio">
+                  <input type="radio" name="gender" value="male" class="np-radio-input" />
+                  <span class="np-radio-label">남성</span>
+                </label>
+                <label class="np-radio">
+                  <input type="radio" name="gender" value="female" class="np-radio-input" />
+                  <span class="np-radio-label">여성</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 생년월일 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="birthdate">생년월일 *</label>
+              <input type="text" id="birthdate" name="birthdate" class="np-textfield"
+                placeholder="생년월일 6자리 (예: 850312)"
+                maxlength="8"
+                inputmode="numeric"
+                autocomplete="bday" />
+              <span class="np-textfield-hint" id="birthdate-confirm"></span>
+            </div>
+
+            <!-- 전화번호 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="phone">전화번호 *</label>
+              <input type="tel" id="phone" name="phone" class="np-textfield"
+                placeholder="숫자만 입력하세요 (예: 01012345678)"
+                maxlength="13"
+                inputmode="numeric"
+                autocomplete="tel" />
+              <span class="np-textfield-hint">입력하면 자동으로 010-XXXX-XXXX 형식이 됩니다</span>
+            </div>
+          </div>
+
+          <div class="np-divider mb-6"></div>
+
+          <!-- 그룹 2: 계정 정보 -->
+          <p class="text-base font-bold text-neutral-500 uppercase tracking-widest mb-4">계정 정보</p>
+          <div class="flex flex-col gap-5 mb-8">
+
+            <!-- 이메일 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="email">이메일 *</label>
+              <input type="email" id="email" name="email" class="np-textfield"
+                placeholder="예) example@naver.com"
+                autocomplete="email" />
+              <span class="np-textfield-hint" id="email-hint"></span>
+            </div>
+
+            <!-- 비밀번호 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="password">비밀번호 *</label>
+              <div class="np-textfield-password-wrap">
+                <input type="password" id="password" name="password" class="np-textfield"
+                  placeholder="비밀번호를 입력하세요"
+                  autocomplete="new-password" />
+                <button type="button" class="np-textfield-pw-toggle" onclick="togglePw('password', this)" aria-label="비밀번호 표시">
+                  <i data-lucide="eye" style="width:20px;height:20px;"></i>
+                </button>
+              </div>
+              <!-- 비밀번호 조건 체크리스트 -->
+              <div class="mt-3 flex flex-col gap-1.5" id="pw-checklist">
+                <div class="pw-check flex items-center gap-2 text-base text-neutral-400" id="check-len">
+                  <i data-lucide="circle" style="width:16px;height:16px;"></i>
+                  <span>8자 이상</span>
+                </div>
+                <div class="pw-check flex items-center gap-2 text-base text-neutral-400" id="check-eng">
+                  <i data-lucide="circle" style="width:16px;height:16px;"></i>
+                  <span>영문 포함</span>
+                </div>
+                <div class="pw-check flex items-center gap-2 text-base text-neutral-400" id="check-num">
+                  <i data-lucide="circle" style="width:16px;height:16px;"></i>
+                  <span>숫자 포함</span>
+                </div>
+                <div class="pw-check flex items-center gap-2 text-base text-neutral-400" id="check-special">
+                  <i data-lucide="circle" style="width:16px;height:16px;"></i>
+                  <span>특수문자 포함</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 비밀번호 확인 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="password-confirm">비밀번호 확인 *</label>
+              <div class="np-textfield-password-wrap">
+                <input type="password" id="password-confirm" name="password-confirm" class="np-textfield"
+                  placeholder="비밀번호를 다시 입력하세요"
+                  autocomplete="new-password" />
+                <button type="button" class="np-textfield-pw-toggle" onclick="togglePw('password-confirm', this)" aria-label="비밀번호 표시">
+                  <i data-lucide="eye" style="width:20px;height:20px;"></i>
+                </button>
+              </div>
+              <span class="np-textfield-hint" id="pw-match-hint"></span>
+            </div>
+
+          </div>
+
+          <!-- 약관 동의 -->
+          <div class="bg-neutral-50 rounded-card p-5 mb-8">
+            <label class="np-checkbox mb-4" id="agree-all-wrap">
+              <input type="checkbox" id="agree-all" class="np-checkbox-input" onchange="toggleAllAgree(this)" />
+              <span class="np-checkbox-label font-semibold">약관 전체 동의</span>
+            </label>
+            <div class="border-t border-neutral-200 pt-4 flex flex-col gap-3 pl-2">
+              <label class="np-checkbox">
+                <input type="checkbox" class="np-checkbox-input agree-item" onchange="syncAgreeAll()" />
+                <span class="np-checkbox-label">이용약관 동의 <span class="text-primary-500 text-base">(필수)</span></span>
+              </label>
+              <label class="np-checkbox">
+                <input type="checkbox" class="np-checkbox-input agree-item" onchange="syncAgreeAll()" />
+                <span class="np-checkbox-label">개인정보 수집·이용 동의 <span class="text-primary-500 text-base">(필수)</span></span>
+              </label>
+              <label class="np-checkbox">
+                <input type="checkbox" class="np-checkbox-input agree-item" onchange="syncAgreeAll()" />
+                <span class="np-checkbox-label">마케팅 정보 수신 동의 <span class="text-neutral-400 text-base">(선택)</span></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 버튼 -->
+          <div class="flex justify-end">
+            <button class="np-btn np-btn-primary np-btn-lg w-full md:w-auto" onclick="goToStep(2)">
+              저장하고 다음 단계로
+              <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════ STEP 2: 학력 ════════════════ -->
+      <div class="step-panel hidden" id="step-2">
+        <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 md:p-8">
+
+          <!-- 이력서 연동 안내 배너 -->
+          <div class="flex items-start gap-3 bg-primary-50 border border-primary-100 rounded-button px-4 py-3 mb-6" id="banner-step2">
+            <i data-lucide="file-text" style="width:20px;height:20px;" class="text-primary-500 shrink-0 mt-0.5"></i>
+            <p class="text-base text-neutral-700 leading-relaxed flex-1">이 정보는 이력서 <strong class="text-primary-500">학력</strong> 항목에 자동 반영됩니다</p>
+            <button onclick="closeBanner('banner-step2')" class="text-neutral-400 hover:text-neutral-600 shrink-0 transition-colors" aria-label="닫기">
+              <i data-lucide="x" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+
+          <h2 class="text-2xl font-bold text-neutral-900 mb-1">학력 상세</h2>
+          <p class="text-base text-neutral-400 mb-2">* 표시 항목은 필수입니다</p>
+          <div class="np-divider mb-6"></div>
+
+          <div class="flex flex-col gap-5 mb-8">
+
+            <!-- 최종학력 -->
+            <div class="flex flex-col gap-2">
+              <span class="np-textfield-label">최종학력 *</span>
+              <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+                <label class="np-radio">
+                  <input type="radio" name="edu-level" value="below-middle" class="np-radio-input" onchange="updateEduFields(this.value)" />
+                  <span class="np-radio-label">중졸 이하</span>
+                </label>
+                <label class="np-radio">
+                  <input type="radio" name="edu-level" value="high" class="np-radio-input" onchange="updateEduFields(this.value)" />
+                  <span class="np-radio-label">고졸</span>
+                </label>
+                <label class="np-radio">
+                  <input type="radio" name="edu-level" value="college" class="np-radio-input" onchange="updateEduFields(this.value)" />
+                  <span class="np-radio-label">대학교</span>
+                </label>
+                <label class="np-radio">
+                  <input type="radio" name="edu-level" value="grad" class="np-radio-input" onchange="updateEduFields(this.value)" />
+                  <span class="np-radio-label">대학원</span>
+                </label>
+              </div>
+              <!-- 선택 예고 -->
+              <p class="text-base text-neutral-400 mt-1" id="edu-preview">최종학력을 선택하면 추가 정보를 입력합니다</p>
+            </div>
+
+            <!-- 대학 이상 추가 필드 -->
+            <div id="edu-detail-fields" style="display:none;flex-direction:column;gap:20px">
+
+              <!-- 학교명 -->
+              <div class="np-textfield-wrap">
+                <label class="np-textfield-label" for="school-name">학교명 *</label>
+                <input type="text" id="school-name" name="school-name" class="np-textfield"
+                  placeholder="예) 서울대학교, 한국대학교" />
+              </div>
+
+              <!-- 전공 -->
+              <div class="np-textfield-wrap">
+                <label class="np-textfield-label" for="major">전공 <span class="font-normal text-neutral-400">(선택)</span></label>
+                <input type="text" id="major" name="major" class="np-textfield"
+                  placeholder="예) 경영학, 컴퓨터공학" />
+              </div>
+
+              <!-- 입학년도 -->
+              <div class="flex flex-col gap-2">
+                <span class="np-textfield-label">입학년도 <span class="font-normal text-neutral-400">(선택)</span></span>
+                <div class="flex gap-3">
+                  <select class="np-textfield flex-1" id="edu-start-year" name="edu-start-year" style="cursor:pointer">
+                    <option value="">년도</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 졸업구분 -->
+              <div class="flex flex-col gap-2">
+                <label class="np-textfield-label" for="edu-status">졸업구분 *</label>
+                <details class="np-dropdown w-full" id="dd-edu-status">
+                  <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
+                    <span class="filter-label text-neutral-400">졸업구분을 선택하세요</span>
+                    <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
+                  </summary>
+                  <div class="np-dropdown-menu">
+                    <div class="np-dropdown-item" data-value="graduated">졸업 — 과정을 마쳤습니다</div>
+                    <div class="np-dropdown-item" data-value="attending">재학 중 — 현재 다니고 있습니다</div>
+                    <div class="np-dropdown-item" data-value="dropout">중퇴 — 중간에 그만뒀습니다</div>
+                    <div class="np-dropdown-item" data-value="completed">수료 — 과정을 이수했습니다</div>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 버튼 -->
+          <div class="flex gap-3 justify-between">
+            <button class="np-btn np-btn-grey-stroke np-btn-lg" onclick="goToStep(1)">
+              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+              이전 단계로
+            </button>
+            <button class="np-btn np-btn-primary np-btn-lg" onclick="goToStep(3)">
+              저장하고 다음 단계로
+              <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════ STEP 3: 경력 ════════════════ -->
+      <div class="step-panel hidden" id="step-3">
+        <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 md:p-8">
+
+          <!-- 이력서 연동 안내 배너 -->
+          <div class="flex items-start gap-3 bg-primary-50 border border-primary-100 rounded-button px-4 py-3 mb-6" id="banner-step3">
+            <i data-lucide="file-text" style="width:20px;height:20px;" class="text-primary-500 shrink-0 mt-0.5"></i>
+            <p class="text-base text-neutral-700 leading-relaxed flex-1">이 정보는 이력서 <strong class="text-primary-500">경력</strong> 항목에 자동 반영됩니다</p>
+            <button onclick="closeBanner('banner-step3')" class="text-neutral-400 hover:text-neutral-600 shrink-0 transition-colors" aria-label="닫기">
+              <i data-lucide="x" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+
+          <h2 class="text-2xl font-bold text-neutral-900 mb-1">경력 사항</h2>
+          <p class="text-base text-neutral-400 mb-2">경력이 없으면 건너뛰어도 됩니다</p>
+          <div class="np-divider mb-6"></div>
+
+          <!-- 경력 없음 버튼 -->
+          <div class="mb-5">
+            <label class="np-checkbox">
+              <input type="checkbox" id="no-career" class="np-checkbox-input" onchange="toggleNoCareer(this)" />
+              <span class="np-checkbox-label font-semibold">경력 없음 (신입으로 등록)</span>
+            </label>
+            <p class="text-base text-neutral-400 mt-2 ml-9" id="no-career-msg" style="display:none">신입으로 등록됩니다. 언제든지 마이페이지에서 수정할 수 있어요.</p>
+          </div>
+
+          <!-- 경력 카드 목록 -->
+          <div id="career-list" class="flex flex-col gap-5 mb-5">
+            <!-- 카드는 JS로 추가됨, 초기 1개 표시 -->
+            <div class="career-card bg-neutral-50 rounded-card border border-neutral-200 p-5 flex flex-col gap-4">
+              <div class="flex items-center justify-between mb-1">
+                <p class="text-lg font-bold text-neutral-800">경력 1</p>
+                <button class="np-btn np-btn-ghost" style="padding:4px 8px;height:auto;font-size:14px;" onclick="removeCareerCard(this)">
+                  <i data-lucide="x" style="width:16px;height:16px;"></i>
+                  삭제
+                </button>
+              </div>
+
+              <div class="np-textfield-wrap">
+                <label class="np-textfield-label">회사명 *</label>
+                <input type="text" class="np-textfield" placeholder="예) (주)넥스트파트너" />
+              </div>
+
+              <div class="np-textfield-wrap">
+                <label class="np-textfield-label">담당 직무 *</label>
+                <input type="text" class="np-textfield" placeholder="예) 영업 관리, IT 개발" />
+              </div>
+
+              <!-- 기간 -->
+              <div class="flex flex-col gap-2">
+                <span class="np-textfield-label">재직 기간 *</span>
+                <div class="flex items-center gap-3">
+                  <div class="flex gap-2 flex-1">
+                    <select class="np-textfield flex-1" style="cursor:pointer" aria-label="시작 년도">
+                      <option value="">년도</option>
+                    </select>
+                    <select class="np-textfield w-24" style="cursor:pointer" aria-label="시작 월">
+                      <option value="">월</option>
+                    </select>
+                  </div>
+                  <span class="text-base text-neutral-400 shrink-0">~</span>
+                  <div class="flex gap-2 flex-1 end-date-group">
+                    <select class="np-textfield flex-1" style="cursor:pointer" aria-label="종료 년도">
+                      <option value="">년도</option>
+                    </select>
+                    <select class="np-textfield w-24" style="cursor:pointer" aria-label="종료 월">
+                      <option value="">월</option>
+                    </select>
+                  </div>
+                </div>
+                <label class="np-checkbox mt-1">
+                  <input type="checkbox" class="np-checkbox-input current-job-cb" onchange="toggleCurrentJob(this)" />
+                  <span class="np-checkbox-label">현재 재직 중</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 경력 추가 버튼 -->
+          <button class="np-btn np-btn-secondary np-btn-md w-full mb-8" id="add-career-btn" onclick="addCareerCard()">
+            <i data-lucide="plus" style="width:20px;height:20px;"></i>
+            경력 추가
+          </button>
+
+          <!-- 버튼 -->
+          <div class="flex gap-3 justify-between">
+            <button class="np-btn np-btn-grey-stroke np-btn-lg" onclick="goToStep(2)">
+              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+              이전 단계로
+            </button>
+            <button class="np-btn np-btn-primary np-btn-lg" onclick="goToStep(4)">
+              저장하고 다음 단계로
+              <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════ STEP 4: 자격증 ════════════════ -->
+      <div class="step-panel hidden" id="step-4">
+        <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 md:p-8">
+
+          <!-- 이력서 연동 안내 배너 -->
+          <div class="flex items-start gap-3 bg-primary-50 border border-primary-100 rounded-button px-4 py-3 mb-6" id="banner-step4">
+            <i data-lucide="file-text" style="width:20px;height:20px;" class="text-primary-500 shrink-0 mt-0.5"></i>
+            <p class="text-base text-neutral-700 leading-relaxed flex-1">이 정보는 이력서 <strong class="text-primary-500">자격증</strong> 항목에 자동 반영됩니다</p>
+            <button onclick="closeBanner('banner-step4')" class="text-neutral-400 hover:text-neutral-600 shrink-0 transition-colors" aria-label="닫기">
+              <i data-lucide="x" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+
+          <h2 class="text-2xl font-bold text-neutral-900 mb-1">자격증</h2>
+          <p class="text-base text-neutral-400 mb-2">자격증이 없으면 건너뛰어도 됩니다</p>
+          <div class="np-divider mb-6"></div>
+
+          <!-- 자격증 없음 -->
+          <div class="mb-5">
+            <label class="np-checkbox">
+              <input type="checkbox" id="no-cert" class="np-checkbox-input" onchange="toggleNoCert(this)" />
+              <span class="np-checkbox-label font-semibold">자격증 없음</span>
+            </label>
+          </div>
+
+          <!-- 자격증 카드 목록 -->
+          <div id="cert-list" class="flex flex-col gap-5 mb-5">
+            <div class="cert-card bg-neutral-50 rounded-card border border-neutral-200 p-5 flex flex-col gap-4">
+              <div class="flex items-center justify-between mb-1">
+                <p class="text-lg font-bold text-neutral-800">자격증 1</p>
+                <button class="np-btn np-btn-ghost" style="padding:4px 8px;height:auto;font-size:14px;" onclick="removeCertCard(this)">
+                  <i data-lucide="x" style="width:16px;height:16px;"></i>
+                  삭제
+                </button>
+              </div>
+
+              <div class="np-textfield-wrap">
+                <label class="np-textfield-label">자격증명 *</label>
+                <input type="text" class="np-textfield" placeholder="예) 운전면허, 정보처리기사, 요양보호사" />
+              </div>
+
+              <div class="np-textfield-wrap">
+                <label class="np-textfield-label">발급기관 <span class="font-normal text-neutral-400">(선택)</span></label>
+                <input type="text" class="np-textfield" placeholder="예) 한국산업인력공단, 도로교통공단" />
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <span class="np-textfield-label">취득일 <span class="font-normal text-neutral-400">(선택)</span></span>
+                <div class="flex gap-3">
+                  <select class="np-textfield flex-1" style="cursor:pointer" aria-label="취득 년도">
+                    <option value="">년도</option>
+                  </select>
+                  <select class="np-textfield w-28" style="cursor:pointer" aria-label="취득 월">
+                    <option value="">월</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 자격증 추가 버튼 -->
+          <button class="np-btn np-btn-secondary np-btn-md w-full mb-8" id="add-cert-btn" onclick="addCertCard()">
+            <i data-lucide="plus" style="width:20px;height:20px;"></i>
+            자격증 추가
+          </button>
+
+          <!-- 버튼 -->
+          <div class="flex gap-3 justify-between">
+            <button class="np-btn np-btn-grey-stroke np-btn-lg" onclick="goToStep(3)">
+              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+              이전 단계로
+            </button>
+            <button class="np-btn np-btn-primary np-btn-lg" onclick="goToStep(5)">
+              저장하고 다음 단계로
+              <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════ STEP 5: 희망 조건 ════════════════ -->
+      <div class="step-panel hidden" id="step-5">
+        <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 md:p-8">
+
+          <!-- 이력서 연동 안내 배너 -->
+          <div class="flex items-start gap-3 bg-primary-50 border border-primary-100 rounded-button px-4 py-3 mb-6" id="banner-step5">
+            <i data-lucide="file-text" style="width:20px;height:20px;" class="text-primary-500 shrink-0 mt-0.5"></i>
+            <p class="text-base text-neutral-700 leading-relaxed flex-1">이 정보는 이력서 <strong class="text-primary-500">희망 조건</strong>에 반영됩니다. 완료 후 이력서에서 바로 확인하실 수 있어요.</p>
+            <button onclick="closeBanner('banner-step5')" class="text-neutral-400 hover:text-neutral-600 shrink-0 transition-colors" aria-label="닫기">
+              <i data-lucide="x" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+
+          <h2 class="text-2xl font-bold text-neutral-900 mb-1">희망 조건 설정</h2>
+          <p class="text-base text-neutral-400 mb-2">* 표시 항목은 필수입니다</p>
+          <div class="np-divider mb-6"></div>
+
+          <div class="flex flex-col gap-6 mb-8">
+
+            <!-- 희망 직무 -->
+            <div class="flex flex-col gap-3">
+              <div class="flex items-baseline justify-between">
+                <span class="np-textfield-label">희망 직무 * <span class="font-normal text-neutral-400 text-base">(최대 3개)</span></span>
+                <span class="text-base text-neutral-400" id="job-tag-count">0 / 3 선택</span>
+              </div>
+              <!-- 선택된 직무 표시 -->
+              <div id="selected-jobs" class="hidden flex flex-wrap gap-2 p-3 bg-primary-50 rounded-button">
+                <span class="text-base text-primary-500 font-semibold">선택한 직무: </span>
+                <div id="selected-job-tags" class="flex flex-wrap gap-2"></div>
+              </div>
+              <!-- 직무 태그 그리드 -->
+              <div class="flex flex-wrap gap-2" id="job-tag-grid">
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="경영·사무">경영·사무</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="영업·마케팅">영업·마케팅</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="IT·개발">IT·개발</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="디자인">디자인</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="생산·제조">생산·제조</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="물류·운송">물류·운송</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="서비스·돌봄">서비스·돌봄</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="교육·강사">교육·강사</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="금융·보험">금융·보험</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="건설·시설">건설·시설</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="의료·보건">의료·보건</button>
+                <button class="np-chip" onclick="toggleJobTag(this)" data-job="기타">기타</button>
+              </div>
+            </div>
+
+            <!-- 희망 근무 형태 -->
+            <div class="flex flex-col gap-2">
+              <label class="np-textfield-label">희망 근무 형태 *</label>
+              <details class="np-dropdown w-full" id="dd-work-type">
+                <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
+                  <span class="filter-label text-neutral-400">근무 형태를 선택하세요</span>
+                  <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
+                </summary>
+                <div class="np-dropdown-menu">
+                  <div class="np-dropdown-item" data-value="fulltime">정규직 — 기간 정함 없이 근무</div>
+                  <div class="np-dropdown-item" data-value="contract">계약직 — 기간을 정해 근무</div>
+                  <div class="np-dropdown-item" data-value="parttime">아르바이트 — 시간제·단기 근무</div>
+                  <div class="np-dropdown-item" data-value="dispatch">파견직</div>
+                  <div class="np-dropdown-item" data-value="freelance">프리랜서</div>
+                </div>
+              </details>
+            </div>
+
+            <!-- 희망 근무 지역 -->
+            <div class="flex flex-col gap-2">
+              <label class="np-textfield-label">희망 근무 지역 * <span class="font-normal text-neutral-400 text-base">(최대 3개)</span></label>
+              <details class="np-dropdown w-full" id="dd-region">
+                <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
+                  <span class="filter-label text-neutral-400">지역을 선택하세요</span>
+                  <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
+                </summary>
+                <div class="np-dropdown-menu">
+                  <div class="np-dropdown-item">서울</div>
+                  <div class="np-dropdown-item">경기</div>
+                  <div class="np-dropdown-item">인천</div>
+                  <div class="np-dropdown-item">부산</div>
+                  <div class="np-dropdown-item">대구</div>
+                  <div class="np-dropdown-item">대전</div>
+                  <div class="np-dropdown-item">광주</div>
+                  <div class="np-dropdown-item">울산</div>
+                  <div class="np-dropdown-item">세종</div>
+                  <div class="np-dropdown-item">강원</div>
+                  <div class="np-dropdown-item">충북</div>
+                  <div class="np-dropdown-item">충남</div>
+                  <div class="np-dropdown-item">전북</div>
+                  <div class="np-dropdown-item">전남</div>
+                  <div class="np-dropdown-item">경북</div>
+                  <div class="np-dropdown-item">경남</div>
+                  <div class="np-dropdown-item">제주</div>
+                  <div class="np-dropdown-item">전국 (무관)</div>
+                </div>
+              </details>
+            </div>
+
+            <!-- 희망 연봉 -->
+            <div class="np-textfield-wrap">
+              <label class="np-textfield-label" for="salary">희망 연봉 <span class="font-normal text-neutral-400">(선택)</span></label>
+              <input type="text" id="salary" name="salary" class="np-textfield"
+                placeholder="예) 3600"
+                inputmode="numeric" />
+              <span class="np-textfield-hint" id="salary-display">숫자만 입력하세요 (단위: 만 원)</span>
+              <span class="text-base text-neutral-400 mt-1 block">연봉은 매칭 공고 필터에 사용되며, 기업에는 공개되지 않습니다</span>
+            </div>
+
+          </div>
+
+          <!-- 입력 요약 -->
+          <div class="bg-neutral-50 rounded-card border border-neutral-200 p-5 mb-8" id="step5-summary">
+            <p class="text-base font-bold text-neutral-700 mb-3">입력 내용 확인</p>
+            <div class="flex flex-col gap-2">
+              <div class="flex items-start gap-2">
+                <i data-lucide="check-circle" style="width:18px;height:18px;" class="text-success-500 shrink-0 mt-0.5"></i>
+                <span class="text-base text-neutral-700">희망 직무: <span id="summary-jobs" class="font-semibold">—</span></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i data-lucide="check-circle" style="width:18px;height:18px;" class="text-success-500 shrink-0 mt-0.5"></i>
+                <span class="text-base text-neutral-700">근무 형태: <span id="summary-work-type" class="font-semibold">—</span></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i data-lucide="check-circle" style="width:18px;height:18px;" class="text-success-500 shrink-0 mt-0.5"></i>
+                <span class="text-base text-neutral-700">근무 지역: <span id="summary-region" class="font-semibold">—</span></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i data-lucide="check-circle" style="width:18px;height:18px;" class="text-success-500 shrink-0 mt-0.5"></i>
+                <span class="text-base text-neutral-700">희망 연봉: <span id="summary-salary" class="font-semibold">—</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 버튼 -->
+          <div class="flex gap-3 justify-between">
+            <button class="np-btn np-btn-grey-stroke np-btn-lg" onclick="goToStep(4)">
+              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+              이전 단계로
+            </button>
+            <button class="np-btn np-btn-primary np-btn-lg" onclick="completeSignup()">
+              이력서 만들고 가입 완료하기
+              <i data-lucide="check" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /우측 폼 -->
+  </div><!-- /2열 레이아웃 -->
+</div><!-- /컨테이너 -->
+
+<!-- ══════════════════════════════════════
+     가입 완료 모달
+══════════════════════════════════════ -->
+<div class="np-modal-overlay hidden" id="complete-modal">
+  <div class="np-modal">
+    <div class="np-modal-body pt-8 text-center">
+      <div class="w-16 h-16 rounded-full bg-success-100 flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="check" style="width:32px;height:32px;" class="text-success-500"></i>
+      </div>
+      <p class="text-2xl font-bold text-neutral-900 mb-3">가입이 완료되었습니다!</p>
+      <p class="text-lg text-neutral-600 leading-relaxed">입력하신 정보로 이력서 초안이 만들어졌어요.<br>지금 바로 확인해보세요.</p>
+    </div>
+    <div class="np-modal-footer flex-col gap-3 pt-6">
+      <button class="np-btn np-btn-primary np-btn-lg w-full" onclick="goToResume()">
+        내 이력서 확인하기
+        <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+      </button>
+      <button class="np-btn np-btn-ghost np-btn-md w-full" onclick="goToHome()">
+        홈으로 이동
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     삭제 확인 모달 (경력/자격증)
+══════════════════════════════════════ -->
+<div class="np-modal-overlay hidden" id="delete-confirm-modal">
+  <div class="np-modal">
+    <div class="np-modal-header">
+      <p class="np-modal-title">삭제할까요?</p>
+    </div>
+    <div class="np-modal-body">
+      이 항목을 삭제하면 입력하신 내용이 사라집니다.
+    </div>
+    <div class="np-modal-footer">
+      <button class="np-btn np-btn-grey-stroke np-btn-md flex-1" onclick="cancelDelete()">취소</button>
+      <button class="np-btn np-btn-primary np-btn-md flex-1" id="confirm-delete-btn">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     푸터
+══════════════════════════════════════ -->
+<footer class="np-footer">
+  <div class="np-footer-inner">
+    <div class="flex flex-col justify-between gap-8 flex-1">
+      <div>
+        <p class="np-footer-tagline">중장년층을 위한 일자리 매칭 플랫폼</p>
+        <p class="np-footer-info">
+          주식회사 모리아타운 &nbsp;|&nbsp; 대표: 권오형 &nbsp;|&nbsp; 사업자등록번호: 215-86-89431<br/>
+          주소: 05854 서울특별시 송파구 법원로 114 (문정동) 비동 915호 &nbsp;|&nbsp; 전화:
+          <a href="tel:02-6713-7076" class="underline hover:text-neutral-900 transition-colors">02-6713-7076</a><br/>
+          직업정보제공사업 신고번호: 서울동부 제2026-11호
+        </p>
+        <p class="np-footer-info mt-3">© 2026 NextPartner. All rights reserved.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
+          <path d="M16 2L28.7 9.5V24.5L16 32L3.3 24.5V9.5L16 2Z" fill="#ff7f65"/>
+          <path d="M11 10h2.5l5 12H16l-1.2-3H10l-1.2 3H6.5L11 10Zm2.8 7-1.8-4.5L10.2 17h3.6Z" fill="white"/>
+        </svg>
+        <div>
+          <p class="text-base font-bold text-neutral-900 leading-tight">NextPartner</p>
+          <p class="text-sm text-neutral-400 leading-tight">Senior Talent Marketplace</p>
+        </div>
+      </div>
+    </div>
+    <div class="shrink-0">
+      <p class="np-footer-section-title">Support</p>
+      <a class="np-footer-link" href="#">고객센터</a>
+      <a class="np-footer-link" href="#">회사소개</a>
+      <a class="np-footer-link" href="#">개인회원 이용약관</a>
+      <a class="np-footer-link" href="#">기업회원 이용약관</a>
+      <a class="np-footer-link" href="#">개인정보 처리방침</a>
+      <a class="np-footer-link" href="#">위치기반서비스</a>
+    </div>
+  </div>
+</footer>
+
+<!-- 하단 내비게이션 바 (모바일) -->
+<nav class="np-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-50">
+  <button class="np-bottom-nav-item" onclick="goToStep(currentStep - 1 < 1 ? 1 : currentStep - 1)">
+    <i data-lucide="chevron-left" style="width:24px;height:24px;"></i>
+    <span class="np-bottom-nav-label">이전</span>
+  </button>
+  <div class="np-bottom-nav-item active">
+    <i data-lucide="user-plus" style="width:24px;height:24px;"></i>
+    <span class="np-bottom-nav-label">회원가입</span>
+  </div>
+  <button class="np-bottom-nav-item" onclick="goToStep(currentStep + 1 > 5 ? 5 : currentStep + 1)">
+    <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+    <span class="np-bottom-nav-label">다음</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     스크립트
+══════════════════════════════════════ -->
+<script>
+/* ── 전역 상태 ── */
+var currentStep = 1;
+var selectedJobs = [];
+var pendingDeleteEl = null;
+
+var stepLabels = ['기본 정보', '학력', '경력', '자격증', '희망 조건'];
+var stepContextMsgs = [
+  '기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.',
+  '학력을 입력하면 이력서 학력 항목이 완성됩니다.',
+  '경력이 없어도 괜찮아요. 신입도 환영합니다!',
+  '보유한 자격증을 입력하면 이력서가 더욱 풍성해집니다.',
+  '거의 다 왔어요! 희망 조건을 설정하면 딱 맞는 공고를 추천받을 수 있어요.'
+];
+
+/* ── 단계 이동 ── */
+function goToStep(n) {
+  if (n < 1 || n > 5) return;
+  document.getElementById('step-' + currentStep).classList.add('hidden');
+  currentStep = n;
+  document.getElementById('step-' + n).classList.remove('hidden');
+  updateStepUI();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateStepUI() {
+  var pct = (currentStep / 5) * 100;
+
+  /* 모바일 */
+  document.getElementById('mobile-step-label').textContent = currentStep + '단계 · ' + stepLabels[currentStep - 1];
+  document.getElementById('mobile-step-count').textContent = '5단계 중 ' + currentStep + '단계';
+  document.getElementById('mobile-progress-bar').style.width = pct + '%';
+
+  /* 사이드바 */
+  document.getElementById('sidebar-progress-bar').style.width = pct + '%';
+  document.getElementById('sidebar-progress-text').textContent = pct + '% 완료';
+  var remain = 5 - currentStep;
+  document.getElementById('sidebar-remain-text').textContent =
+    remain === 0 ? '마지막 단계입니다!' : remain + '단계 남았습니다';
+  document.getElementById('sidebar-context-msg').textContent = stepContextMsgs[currentStep - 1];
+
+  /* 사이드 스텝 내비 스타일 */
+  document.querySelectorAll('.step-nav-btn').forEach(function(btn) {
+    var s = parseInt(btn.dataset.step);
+    var circle = btn.querySelector('.step-circle');
+    if (s < currentStep) {
+      btn.classList.remove('bg-primary-50');
+      circle.className = 'step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120 bg-success-100 text-success-500';
+      circle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else if (s === currentStep) {
+      btn.classList.add('bg-primary-50');
+      circle.className = 'step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120 bg-primary-500 text-neutral-0';
+      circle.textContent = s;
+    } else {
+      btn.classList.remove('bg-primary-50');
+      circle.className = 'step-circle flex items-center justify-center w-7 h-7 rounded-full text-base font-bold shrink-0 transition-colors duration-120 bg-neutral-100 text-neutral-400';
+      circle.textContent = s;
+    }
+  });
+}
+
+/* ── 배너 닫기 ── */
+function closeBanner(id) {
+  var el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+/* ── 약관 동의 ── */
+function toggleAllAgree(master) {
+  document.querySelectorAll('.agree-item').forEach(function(cb) { cb.checked = master.checked; });
+  master.indeterminate = false;
+}
+function syncAgreeAll() {
+  var items = document.querySelectorAll('.agree-item');
+  var count = Array.from(items).filter(function(cb) { return cb.checked; }).length;
+  var master = document.getElementById('agree-all');
+  master.checked = count === items.length;
+  master.indeterminate = count > 0 && count < items.length;
+}
+
+/* ── 비밀번호 표시/숨김 ── */
+function togglePw(inputId, btn) {
+  var input = document.getElementById(inputId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.innerHTML = '<i data-lucide="eye-off" style="width:20px;height:20px;"></i>';
+  } else {
+    input.type = 'password';
+    btn.innerHTML = '<i data-lucide="eye" style="width:20px;height:20px;"></i>';
+  }
+  lucide.createIcons({ nameAttr: 'data-lucide' });
+}
+
+/* ── 비밀번호 실시간 검증 ── */
+document.getElementById('password').addEventListener('input', function() {
+  var v = this.value;
+  setCheck('check-len',     v.length >= 8);
+  setCheck('check-eng',     /[a-zA-Z]/.test(v));
+  setCheck('check-num',     /[0-9]/.test(v));
+  setCheck('check-special', /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v));
+  checkPwMatch();
+});
+document.getElementById('password-confirm').addEventListener('input', checkPwMatch);
+
+function setCheck(id, ok) {
+  var el = document.getElementById(id);
+  var icon = el.querySelector('i');
+  if (ok) {
+    el.classList.remove('text-neutral-400');
+    el.classList.add('text-success-500');
+    icon.setAttribute('data-lucide', 'check-circle');
+  } else {
+    el.classList.remove('text-success-500');
+    el.classList.add('text-neutral-400');
+    icon.setAttribute('data-lucide', 'circle');
+  }
+  lucide.createIcons({ nameAttr: 'data-lucide' });
+}
+
+function checkPwMatch() {
+  var pw = document.getElementById('password').value;
+  var pc = document.getElementById('password-confirm').value;
+  var hint = document.getElementById('pw-match-hint');
+  if (!pc) { hint.textContent = ''; hint.className = 'np-textfield-hint'; return; }
+  if (pw === pc) {
+    hint.textContent = '✓ 비밀번호가 일치합니다';
+    hint.className = 'np-textfield-hint text-success-500';
+  } else {
+    hint.textContent = '위에 입력한 비밀번호와 동일하게 다시 입력해주세요';
+    hint.className = 'np-textfield-hint-error';
+  }
+}
+
+/* ── 전화번호 자동 하이픈 ── */
+document.getElementById('phone').addEventListener('input', function() {
+  var v = this.value.replace(/\D/g, '');
+  if (v.length <= 3) this.value = v;
+  else if (v.length <= 7) this.value = v.slice(0,3) + '-' + v.slice(3);
+  else this.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+});
+
+/* ── 생년월일 확인 안내 ── */
+document.getElementById('birthdate').addEventListener('input', function() {
+  var v = this.value.replace(/\D/g, '');
+  var hint = document.getElementById('birthdate-confirm');
+  if (v.length === 6) {
+    var yy = parseInt(v.slice(0,2));
+    var mm = parseInt(v.slice(2,4));
+    var dd = parseInt(v.slice(4,6));
+    var year = yy <= 25 ? 2000 + yy : 1900 + yy;
+    if (mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31) {
+      hint.textContent = year + '년 ' + mm + '월 ' + dd + '일로 확인되었습니다';
+      hint.className = 'np-textfield-hint text-success-500';
+    } else {
+      hint.textContent = '올바른 날짜를 입력해주세요';
+      hint.className = 'np-textfield-hint-error';
+    }
+  } else {
+    hint.textContent = '';
+  }
+});
+
+/* ── 이메일 실시간 검증 ── */
+document.getElementById('email').addEventListener('input', function() {
+  var v = this.value;
+  var hint = document.getElementById('email-hint');
+  if (!v) { hint.textContent = ''; hint.className = 'np-textfield-hint'; return; }
+  var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  if (valid) {
+    hint.textContent = '✓ 사용 가능한 이메일입니다';
+    hint.className = 'np-textfield-hint text-success-500';
+  } else {
+    hint.textContent = '이메일 주소를 확인해주세요. 예) example@naver.com';
+    hint.className = 'np-textfield-hint-error';
+  }
+});
+
+/* ── 학력 조건부 필드 ── */
+var eduPreviews = {
+  'below-middle': '추가 학력 정보가 필요하지 않습니다',
+  'high': '추가 학력 정보가 필요하지 않습니다',
+  'college': '대학교 선택 → 학교명·전공·입학년도·졸업구분을 입력합니다',
+  'grad': '대학원 선택 → 학교명·전공·입학년도·졸업구분을 입력합니다'
+};
+function updateEduFields(val) {
+  document.getElementById('edu-preview').textContent = eduPreviews[val] || '';
+  var detail = document.getElementById('edu-detail-fields');
+  detail.style.display = (val === 'college' || val === 'grad') ? 'flex' : 'none';
+}
+
+/* ── 경력 없음 토글 ── */
+function toggleNoCareer(cb) {
+  var list = document.getElementById('career-list');
+  var addBtn = document.getElementById('add-career-btn');
+  var msg = document.getElementById('no-career-msg');
+  if (cb.checked) {
+    list.style.opacity = '0.3';
+    list.style.pointerEvents = 'none';
+    addBtn.disabled = true;
+    msg.style.display = 'block';
+  } else {
+    list.style.opacity = '';
+    list.style.pointerEvents = '';
+    addBtn.disabled = false;
+    msg.style.display = 'none';
+  }
+}
+
+/* ── 경력 카드 추가/삭제 ── */
+var careerCount = 1;
+function addCareerCard() {
+  careerCount++;
+  var html = buildCareerCard(careerCount);
+  document.getElementById('career-list').insertAdjacentHTML('beforeend', html);
+  populateYearSelects();
+  lucide.createIcons({ nameAttr: 'data-lucide' });
+}
+
+function buildCareerCard(n) {
+  return '<div class="career-card bg-neutral-50 rounded-card border border-neutral-200 p-5 flex flex-col gap-4">' +
+    '<div class="flex items-center justify-between mb-1">' +
+    '<p class="text-lg font-bold text-neutral-800">경력 ' + n + '</p>' +
+    '<button class="np-btn np-btn-ghost" style="padding:4px 8px;height:auto;font-size:14px;" onclick="removeCareerCard(this)">' +
+    '<i data-lucide="x" style="width:16px;height:16px;"></i> 삭제</button></div>' +
+    '<div class="np-textfield-wrap"><label class="np-textfield-label">회사명 *</label>' +
+    '<input type="text" class="np-textfield" placeholder="예) (주)넥스트파트너" /></div>' +
+    '<div class="np-textfield-wrap"><label class="np-textfield-label">담당 직무 *</label>' +
+    '<input type="text" class="np-textfield" placeholder="예) 영업 관리, IT 개발" /></div>' +
+    '<div class="flex flex-col gap-2"><span class="np-textfield-label">재직 기간 *</span>' +
+    '<div class="flex items-center gap-3">' +
+    '<div class="flex gap-2 flex-1"><select class="np-textfield flex-1" style="cursor:pointer" aria-label="시작 년도"><option value="">년도</option></select>' +
+    '<select class="np-textfield w-24" style="cursor:pointer" aria-label="시작 월"><option value="">월</option></select></div>' +
+    '<span class="text-base text-neutral-400 shrink-0">~</span>' +
+    '<div class="flex gap-2 flex-1 end-date-group"><select class="np-textfield flex-1" style="cursor:pointer" aria-label="종료 년도"><option value="">년도</option></select>' +
+    '<select class="np-textfield w-24" style="cursor:pointer" aria-label="종료 월"><option value="">월</option></select></div></div>' +
+    '<label class="np-checkbox mt-1"><input type="checkbox" class="np-checkbox-input current-job-cb" onchange="toggleCurrentJob(this)" />' +
+    '<span class="np-checkbox-label">현재 재직 중</span></label></div></div>';
+}
+
+function removeCareerCard(btn) {
+  pendingDeleteEl = btn.closest('.career-card');
+  document.getElementById('confirm-delete-btn').onclick = function() {
+    if (pendingDeleteEl) pendingDeleteEl.remove();
+    pendingDeleteEl = null;
+    document.getElementById('delete-confirm-modal').classList.add('hidden');
+  };
+  document.getElementById('delete-confirm-modal').classList.remove('hidden');
+}
+
+function toggleCurrentJob(cb) {
+  var card = cb.closest('.career-card');
+  var endGroup = card.querySelector('.end-date-group');
+  var selects = endGroup.querySelectorAll('select');
+  selects.forEach(function(s) {
+    s.disabled = cb.checked;
+    if (cb.checked) {
+      s.style.opacity = '0.4';
+      s.style.pointerEvents = 'none';
+    } else {
+      s.style.opacity = '';
+      s.style.pointerEvents = '';
+    }
+  });
+}
+
+/* ── 자격증 없음 토글 ── */
+function toggleNoCert(cb) {
+  var list = document.getElementById('cert-list');
+  var addBtn = document.getElementById('add-cert-btn');
+  if (cb.checked) {
+    list.style.opacity = '0.3';
+    list.style.pointerEvents = 'none';
+    addBtn.disabled = true;
+  } else {
+    list.style.opacity = '';
+    list.style.pointerEvents = '';
+    addBtn.disabled = false;
+  }
+}
+
+/* ── 자격증 카드 추가/삭제 ── */
+var certCount = 1;
+function addCertCard() {
+  certCount++;
+  var html = buildCertCard(certCount);
+  document.getElementById('cert-list').insertAdjacentHTML('beforeend', html);
+  populateYearSelects();
+  lucide.createIcons({ nameAttr: 'data-lucide' });
+}
+
+function buildCertCard(n) {
+  return '<div class="cert-card bg-neutral-50 rounded-card border border-neutral-200 p-5 flex flex-col gap-4">' +
+    '<div class="flex items-center justify-between mb-1">' +
+    '<p class="text-lg font-bold text-neutral-800">자격증 ' + n + '</p>' +
+    '<button class="np-btn np-btn-ghost" style="padding:4px 8px;height:auto;font-size:14px;" onclick="removeCertCard(this)">' +
+    '<i data-lucide="x" style="width:16px;height:16px;"></i> 삭제</button></div>' +
+    '<div class="np-textfield-wrap"><label class="np-textfield-label">자격증명 *</label>' +
+    '<input type="text" class="np-textfield" placeholder="예) 운전면허, 정보처리기사, 요양보호사" /></div>' +
+    '<div class="np-textfield-wrap"><label class="np-textfield-label">발급기관 <span class="font-normal text-neutral-400">(선택)</span></label>' +
+    '<input type="text" class="np-textfield" placeholder="예) 한국산업인력공단, 도로교통공단" /></div>' +
+    '<div class="flex flex-col gap-2"><span class="np-textfield-label">취득일 <span class="font-normal text-neutral-400">(선택)</span></span>' +
+    '<div class="flex gap-3"><select class="np-textfield flex-1" style="cursor:pointer" aria-label="취득 년도"><option value="">년도</option></select>' +
+    '<select class="np-textfield w-28" style="cursor:pointer" aria-label="취득 월"><option value="">월</option></select></div></div></div>';
+}
+
+function removeCertCard(btn) {
+  pendingDeleteEl = btn.closest('.cert-card');
+  document.getElementById('confirm-delete-btn').onclick = function() {
+    if (pendingDeleteEl) pendingDeleteEl.remove();
+    pendingDeleteEl = null;
+    document.getElementById('delete-confirm-modal').classList.add('hidden');
+  };
+  document.getElementById('delete-confirm-modal').classList.remove('hidden');
+}
+
+function cancelDelete() {
+  pendingDeleteEl = null;
+  document.getElementById('delete-confirm-modal').classList.add('hidden');
+}
+
+/* ── 년도/월 셀렉트 자동 채우기 ── */
+function populateYearSelects() {
+  var now = new Date().getFullYear();
+  document.querySelectorAll('select[aria-label*="년도"], #edu-start-year').forEach(function(sel) {
+    if (sel.options.length > 1) return;
+    for (var y = now; y >= 1960; y--) {
+      var opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y + '년';
+      sel.appendChild(opt);
+    }
+  });
+  document.querySelectorAll('select[aria-label*="월"]').forEach(function(sel) {
+    if (sel.options.length > 1) return;
+    for (var m = 1; m <= 12; m++) {
+      var opt = document.createElement('option');
+      opt.value = m;
+      opt.textContent = m + '월';
+      sel.appendChild(opt);
+    }
+  });
+}
+
+/* ── 희망 직무 태그 토글 ── */
+function toggleJobTag(btn) {
+  var job = btn.dataset.job;
+  var idx = selectedJobs.indexOf(job);
+  if (idx > -1) {
+    selectedJobs.splice(idx, 1);
+    btn.classList.remove('np-chip-active');
+  } else {
+    if (selectedJobs.length >= 3) {
+      alert('희망 직무는 최대 3개까지 선택할 수 있습니다.');
+      return;
+    }
+    selectedJobs.push(job);
+    btn.classList.add('np-chip-active');
+  }
+  document.getElementById('job-tag-count').textContent = selectedJobs.length + ' / 3 선택';
+
+  var selectedBox = document.getElementById('selected-jobs');
+  var tagContainer = document.getElementById('selected-job-tags');
+  if (selectedJobs.length > 0) {
+    selectedBox.classList.remove('hidden');
+    tagContainer.innerHTML = selectedJobs.map(function(j) {
+      return '<span class="np-badge np-badge-primary">' + j + '</span>';
+    }).join('');
+  } else {
+    selectedBox.classList.add('hidden');
+  }
+  updateStep5Summary();
+}
+
+/* ── 희망 연봉 포맷 ── */
+document.getElementById('salary').addEventListener('input', function() {
+  var v = this.value.replace(/\D/g, '');
+  this.value = v;
+  var display = document.getElementById('salary-display');
+  if (v) {
+    var n = parseInt(v);
+    display.textContent = n.toLocaleString() + '만 원';
+    display.className = 'np-textfield-hint text-neutral-800 font-semibold';
+  } else {
+    display.textContent = '숫자만 입력하세요 (단위: 만 원)';
+    display.className = 'np-textfield-hint';
+  }
+  updateStep5Summary();
+});
+
+/* ── STEP5 요약 업데이트 ── */
+function updateStep5Summary() {
+  document.getElementById('summary-jobs').textContent =
+    selectedJobs.length > 0 ? selectedJobs.join(', ') : '—';
+
+  var wtLabel = document.querySelector('#dd-work-type .filter-label');
+  document.getElementById('summary-work-type').textContent =
+    wtLabel && !wtLabel.classList.contains('text-neutral-400') ? wtLabel.textContent.trim() : '—';
+
+  var regLabel = document.querySelector('#dd-region .filter-label');
+  document.getElementById('summary-region').textContent =
+    regLabel && !regLabel.classList.contains('text-neutral-400') ? regLabel.textContent.trim() : '—';
+
+  var sal = document.getElementById('salary').value;
+  document.getElementById('summary-salary').textContent =
+    sal ? parseInt(sal).toLocaleString() + '만 원' : '—';
+}
+
+/* ── 드롭다운 공통 이벤트 (STEP5 요약 연동) ── */
+document.addEventListener('click', function(e) {
+  var item = e.target.closest('.np-dropdown-item:not(.disabled)');
+  if (!item) return;
+  var dd = item.closest('details.np-dropdown');
+  if (!dd) return;
+  dd.querySelectorAll('.np-dropdown-item').forEach(function(i) { i.classList.remove('selected'); });
+  item.classList.add('selected');
+  var label = dd.querySelector('.filter-label');
+  if (label) {
+    label.textContent = item.textContent.trim();
+    label.classList.remove('text-neutral-400');
+  }
+  dd.open = false;
+  updateStep5Summary();
+});
+
+/* 바깥 클릭 시 드롭다운 닫기 */
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('details.np-dropdown')) {
+    document.querySelectorAll('details.np-dropdown[open]').forEach(function(dd) { dd.open = false; });
+  }
+});
+
+/* ── 가입 완료 ── */
+function completeSignup() {
+  document.getElementById('complete-modal').classList.remove('hidden');
+}
+function goToResume() {
+  window.location.href = '#';
+}
+function goToHome() {
+  window.location.href = '#';
+}
+
+/* ── 사이드 스텝 내비 클릭 ── */
+document.querySelectorAll('.step-nav-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    goToStep(parseInt(this.dataset.step));
+  });
+});
+
+/* ── 초기화 ── */
+populateYearSelects();
+updateStepUI();
+lucide.createIcons({ nameAttr: 'data-lucide' });
+</script>
+
+</body>
+</html>
