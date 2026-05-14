@@ -168,19 +168,22 @@
 ══════════════════════════════════════ -->
 <header class="np-header sticky top-0 z-50">
   <div class="np-header-inner">
-    <a href="#" class="flex items-center gap-2 shrink-0">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <path d="M16 2L28.7 9.5V24.5L16 32L3.3 24.5V9.5L16 2Z" fill="#ff7f65"/>
-        <path d="M11 10h2.5l5 12H16l-1.2-3H10l-1.2 3H6.5L11 10Zm2.8 7-1.8-4.5L10.2 17h3.6Z" fill="white"/>
-      </svg>
-      <span class="text-xl font-bold text-neutral-900 tracking-tight">NextPartner</span>
-    </a>
+    <div class="flex items-center gap-2 shrink-0">
+      <a href="#" class="flex items-center gap-2">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 2L28.7 9.5V24.5L16 32L3.3 24.5V9.5L16 2Z" fill="#ff7f65"/>
+          <path d="M11 10h2.5l5 12H16l-1.2-3H10l-1.2 3H6.5L11 10Zm2.8 7-1.8-4.5L10.2 17h3.6Z" fill="white"/>
+        </svg>
+        <span class="text-2xl font-bold text-neutral-900 tracking-tight">NextPartner</span>
+      </a>
+      <span class="np-badge np-badge-warning">구직자</span>
+    </div>
     <nav class="np-header-nav">
-      <a class="np-nav-link" href="#">서비스소개</a>
-      <div class="np-header-divider"></div>
-      <a class="np-nav-link-job" href="#">채용공고</a>
-      <a class="np-nav-link-job" href="#">프로젝트</a>
-      <a class="np-nav-link-job" href="#">이력서</a>
+      <button class="np-btn np-btn-primary np-btn-md">이력서·자기소개서</button>
+      <button class="np-btn np-btn-primary np-btn-md">인재풀 등록</button>
+      <a class="np-nav-link" href="#">일자리</a>
+      <a class="np-nav-link" href="#">프로젝트</a>
+      <a class="np-nav-link" href="#">박람회</a>
     </nav>
     <div class="np-header-actions">
       <button class="np-btn np-btn-ghost np-btn-md">로그인</button>
@@ -759,7 +762,7 @@
                 <span class="text-base text-neutral-400" id="job-tag-count">0 / 3 선택</span>
               </div>
               <!-- 선택된 직무 표시 -->
-              <div id="selected-jobs" class="hidden flex flex-wrap gap-2 p-3 bg-primary-50 rounded-button">
+              <div id="selected-jobs" style="display:none;flex-wrap:wrap;gap:8px;padding:12px;background:#fff4f1;border-radius:8px">
                 <span class="text-base text-primary-500 font-semibold">선택한 직무: </span>
                 <div id="selected-job-tags" class="flex flex-wrap gap-2"></div>
               </div>
