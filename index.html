@@ -843,13 +843,52 @@
             </div>
 
             <!-- 희망 연봉 -->
-            <div class="np-textfield-wrap">
-              <label class="np-textfield-label" for="salary">희망 연봉 <span class="font-normal text-neutral-400">(선택)</span></label>
-              <input type="text" id="salary" name="salary" class="np-textfield"
-                placeholder="예) 3600"
-                inputmode="numeric" />
-              <span class="np-textfield-hint" id="salary-display">숫자만 입력하세요 (단위: 만 원)</span>
-              <span class="text-base text-neutral-400 mt-1 block">연봉은 매칭 공고 필터에 사용되며, 기업에는 공개되지 않습니다</span>
+            <div class="flex flex-col gap-2">
+              <span class="np-textfield-label">희망 연봉 <span class="font-normal text-neutral-400">(선택)</span></span>
+              <!-- 협의 체크박스 -->
+              <label class="np-checkbox mb-1">
+                <input type="checkbox" id="salary-negotiable" class="np-checkbox-input" onchange="toggleSalaryNegotiable(this)" />
+                <span class="np-checkbox-label">협의 — 연봉은 면접 후 협의</span>
+              </label>
+              <!-- 범위 선택 (협의 해제 시 표시) -->
+              <div id="salary-range-wrap" class="flex items-center gap-3">
+                <details class="np-dropdown flex-1" id="dd-salary-min">
+                  <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
+                    <span class="filter-label text-neutral-400">최소 연봉</span>
+                    <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
+                  </summary>
+                  <div class="np-dropdown-menu">
+                    <div class="np-dropdown-item" data-value="2000">2,000만 원</div>
+                    <div class="np-dropdown-item" data-value="2400">2,400만 원</div>
+                    <div class="np-dropdown-item" data-value="2800">2,800만 원</div>
+                    <div class="np-dropdown-item" data-value="3000">3,000만 원</div>
+                    <div class="np-dropdown-item" data-value="3200">3,200만 원</div>
+                    <div class="np-dropdown-item" data-value="3600">3,600만 원</div>
+                    <div class="np-dropdown-item" data-value="4000">4,000만 원</div>
+                    <div class="np-dropdown-item" data-value="4500">4,500만 원</div>
+                    <div class="np-dropdown-item" data-value="5000">5,000만 원</div>
+                  </div>
+                </details>
+                <span class="text-lg text-neutral-400 shrink-0">~</span>
+                <details class="np-dropdown flex-1" id="dd-salary-max">
+                  <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
+                    <span class="filter-label text-neutral-400">최대 연봉</span>
+                    <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
+                  </summary>
+                  <div class="np-dropdown-menu">
+                    <div class="np-dropdown-item" data-value="2400">2,400만 원</div>
+                    <div class="np-dropdown-item" data-value="2800">2,800만 원</div>
+                    <div class="np-dropdown-item" data-value="3000">3,000만 원</div>
+                    <div class="np-dropdown-item" data-value="3200">3,200만 원</div>
+                    <div class="np-dropdown-item" data-value="3600">3,600만 원</div>
+                    <div class="np-dropdown-item" data-value="4000">4,000만 원</div>
+                    <div class="np-dropdown-item" data-value="4500">4,500만 원</div>
+                    <div class="np-dropdown-item" data-value="5000">5,000만 원</div>
+                    <div class="np-dropdown-item" data-value="6000">6,000만 원 이상</div>
+                  </div>
+                </details>
+              </div>
+              <span class="text-base text-neutral-400">연봉은 매칭 공고 필터에 사용되며, 기업에는 공개되지 않습니다</span>
             </div>
 
           </div>
@@ -1369,21 +1408,13 @@ function toggleJobTag(btn) {
   updateStep5Summary();
 }
 
-/* ── 희망 연봉 포맷 ── */
-document.getElementById('salary').addEventListener('input', function() {
-  var v = this.value.replace(/\D/g, '');
-  this.value = v;
-  var display = document.getElementById('salary-display');
-  if (v) {
-    var n = parseInt(v);
-    display.textContent = n.toLocaleString() + '만 원';
-    display.className = 'np-textfield-hint text-neutral-800 font-semibold';
-  } else {
-    display.textContent = '숫자만 입력하세요 (단위: 만 원)';
-    display.className = 'np-textfield-hint';
-  }
+/* ── 희망 연봉 협의 토글 ── */
+function toggleSalaryNegotiable(cb) {
+  var wrap = document.getElementById('salary-range-wrap');
+  wrap.style.opacity = cb.checked ? '0.3' : '';
+  wrap.style.pointerEvents = cb.checked ? 'none' : '';
   updateStep5Summary();
-});
+}
 
 /* ── STEP5 요약 업데이트 ── */
 function updateStep5Summary() {
@@ -1398,9 +1429,22 @@ function updateStep5Summary() {
   document.getElementById('summary-region').textContent =
     regLabel && !regLabel.classList.contains('text-neutral-400') ? regLabel.textContent.trim() : '—';
 
-  var sal = document.getElementById('salary').value;
-  document.getElementById('summary-salary').textContent =
-    sal ? parseInt(sal).toLocaleString() + '만 원' : '—';
+  var negotiable = document.getElementById('salary-negotiable').checked;
+  var minLabel = document.querySelector('#dd-salary-min .filter-label');
+  var maxLabel = document.querySelector('#dd-salary-max .filter-label');
+  var minTxt = minLabel && !minLabel.classList.contains('text-neutral-400') ? minLabel.textContent.trim() : '';
+  var maxTxt = maxLabel && !maxLabel.classList.contains('text-neutral-400') ? maxLabel.textContent.trim() : '';
+  var salaryText = '—';
+  if (negotiable) {
+    salaryText = '협의';
+  } else if (minTxt && maxTxt) {
+    salaryText = minTxt + ' ~ ' + maxTxt;
+  } else if (minTxt) {
+    salaryText = minTxt + ' 이상';
+  } else if (maxTxt) {
+    salaryText = maxTxt + ' 이하';
+  }
+  document.getElementById('summary-salary').textContent = salaryText;
 }
 
 /* ── 드롭다운 공통 이벤트 (STEP5 요약 연동) ── */
