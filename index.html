@@ -227,11 +227,19 @@
     <aside class="hidden md:block md:w-[35%] shrink-0 sticky top-24 self-start">
       <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 flex flex-col gap-4">
 
-        <!-- 서비스 설명 -->
+        <!-- 작성 완성도 (상단 고정) -->
         <div class="bg-primary-50 rounded-card p-4">
-          <p class="text-lg font-bold text-primary-500 mb-1">이력서 자동 반영</p>
-          <p class="text-base text-neutral-600 leading-relaxed">입력하신 회원가입 정보는 AI 이력서에 바로 반영됩니다. 정확하게 입력할수록 더 좋은 공고를 추천받을 수 있어요.</p>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-lg font-bold text-neutral-800">작성 완성도</span>
+            <span class="text-xl font-bold text-primary-500" id="sidebar-progress-text">20%</span>
+          </div>
+          <div class="w-full h-3 bg-primary-100 rounded-pill overflow-hidden mb-2">
+            <div class="h-full bg-primary-500 rounded-pill transition-all duration-300" id="sidebar-progress-bar" style="width:20%"></div>
+          </div>
+          <span class="text-base text-neutral-500" id="sidebar-remain-text">4단계 남았습니다</span>
         </div>
+
+        <div class="np-divider"></div>
 
         <!-- 스텝 목록 -->
         <nav class="flex flex-col gap-1" aria-label="회원가입 단계">
@@ -274,21 +282,11 @@
 
         <div class="np-divider"></div>
 
-        <!-- 진행률 -->
+        <!-- 서비스 설명 -->
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-base text-neutral-400" id="sidebar-progress-text">20% 완료</span>
-            <span class="text-base text-neutral-400" id="sidebar-remain-text">4단계 남았습니다</span>
-          </div>
-          <div class="w-full h-2 bg-neutral-200 rounded-pill overflow-hidden">
-            <div class="h-full bg-primary-500 rounded-pill transition-all duration-300" id="sidebar-progress-bar" style="width:20%"></div>
-          </div>
+          <p class="text-base font-bold text-primary-500 mb-1">이력서 자동 반영</p>
+          <p class="text-base text-neutral-500 leading-relaxed" id="sidebar-context-msg">기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.</p>
         </div>
-
-        <!-- 맥락 메시지 -->
-        <p class="text-base text-neutral-500 leading-relaxed" id="sidebar-context-msg">
-          기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.
-        </p>
 
       </div>
     </aside>
@@ -1070,7 +1068,7 @@ function updateStepUI() {
 
   /* 사이드바 */
   document.getElementById('sidebar-progress-bar').style.width = pct + '%';
-  document.getElementById('sidebar-progress-text').textContent = pct + '% 완료';
+  document.getElementById('sidebar-progress-text').textContent = Math.round(pct) + '%';
   var remain = 5 - currentStep;
   document.getElementById('sidebar-remain-text').textContent =
     remain === 0 ? '마지막 단계입니다!' : remain + '단계 남았습니다';
