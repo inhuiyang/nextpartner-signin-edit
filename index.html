@@ -173,10 +173,7 @@
   <div class="np-header-inner">
     <div class="flex items-center gap-2 shrink-0">
       <a href="#" class="flex items-center gap-2">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <path d="M16 2L28.7 9.5V24.5L16 32L3.3 24.5V9.5L16 2Z" fill="#ff7f65"/>
-          <path d="M11 10h2.5l5 12H16l-1.2-3H10l-1.2 3H6.5L11 10Zm2.8 7-1.8-4.5L10.2 17h3.6Z" fill="white"/>
-        </svg>
+        <img src="img/symbol.png" width="32" height="32" alt="NextPartner" />
         <span class="text-2xl font-bold text-neutral-900 tracking-tight">NextPartner</span>
       </a>
       <span class="np-badge np-badge-warning">구직자</span>
@@ -203,10 +200,32 @@
 ══════════════════════════════════════ -->
 <div class="w-full max-w-content mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
 
+  <!-- 이력서 자동 생성 안내 배너 -->
+  <div class="rounded-card overflow-hidden mb-8" style="background: linear-gradient(135deg, #ff7f65 0%, #ff9a7a 100%);">
+    <div class="px-6 py-6 md:px-8 md:py-7">
+      <div class="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
+
+        <!-- 아이콘 + 메인 문구 -->
+        <div class="flex items-start gap-4 flex-1 min-w-0">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style="background:rgba(255,255,255,0.22);">
+            <i data-lucide="file-text" style="width:24px;height:24px;color:#fff;"></i>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <p class="text-xl font-bold" style="color:#fff;">가입과 동시에 이력서가 완성됩니다</p>
+            <p class="text-base leading-relaxed" style="color:rgba(255,255,255,0.88);">
+              아래 5단계에서 입력하신 정보는 <strong style="color:#fff;">넥스트파트너 이력서</strong>에 자동으로 반영됩니다.<br class="hidden md:block">
+              별도로 이력서를 작성하지 않아도 가입 완료 즉시 채용 공고에 지원하실 수 있어요.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 페이지 제목 (모바일) -->
   <div class="md:hidden mb-6">
     <h1 class="text-2xl font-bold text-neutral-900">회원가입</h1>
-    <p class="text-base text-neutral-600 mt-1 leading-relaxed">입력하신 정보는 AI 이력서에 바로 반영됩니다</p>
+    <p class="text-base text-neutral-600 mt-1 leading-relaxed">아래 정보를 입력하면 이력서가 자동으로 만들어집니다</p>
   </div>
 
   <!-- 모바일 스텝 진행 바 -->
@@ -221,7 +240,7 @@
   </div>
 
   <!-- 2열 레이아웃: 사이드패널 + 폼 -->
-  <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+  <div class="flex flex-col md:flex-row gap-4 lg:gap-6">
 
     <!-- ── 좌측 사이드 패널 (md 이상) ── -->
     <aside class="hidden md:block md:w-[35%] shrink-0 sticky top-24 self-start">
@@ -281,12 +300,6 @@
         </nav>
 
         <div class="np-divider"></div>
-
-        <!-- 서비스 설명 -->
-        <div>
-          <p class="text-base font-bold text-primary-500 mb-1">이력서 자동 반영</p>
-          <p class="text-base text-neutral-500 leading-relaxed" id="sidebar-context-msg">기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.</p>
-        </div>
 
       </div>
     </aside>
@@ -511,14 +524,14 @@
 
               <!-- 전공 -->
               <div class="np-textfield-wrap">
-                <label class="np-textfield-label" for="major">전공 <span class="font-normal text-neutral-400">(선택)</span></label>
+                <label class="np-textfield-label" for="major">전공 *</label>
                 <input type="text" id="major" name="major" class="np-textfield"
                   placeholder="예) 경영학, 컴퓨터공학" />
               </div>
 
               <!-- 입학년도 -->
               <div class="flex flex-col gap-2">
-                <span class="np-textfield-label">입학년도 <span class="font-normal text-neutral-400">(선택)</span></span>
+                <span class="np-textfield-label">입학년도 *</span>
                 <div class="flex gap-3">
                   <select class="np-textfield flex-1" id="edu-start-year" name="edu-start-year" style="cursor:pointer">
                     <option value="">년도</option>
@@ -718,11 +731,11 @@
                   <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
                 </summary>
                 <div class="np-dropdown-menu">
-                  <div class="np-dropdown-item" data-value="fulltime">정규직 — 기간 정함 없이 근무</div>
-                  <div class="np-dropdown-item" data-value="contract">계약직 — 기간을 정해 근무</div>
-                  <div class="np-dropdown-item" data-value="parttime">아르바이트 — 시간제·단기 근무</div>
-                  <div class="np-dropdown-item" data-value="dispatch">파견직</div>
+                  <div class="np-dropdown-item" data-value="fulltime">정규직</div>
+                  <div class="np-dropdown-item" data-value="contract">계약직</div>
+                  <div class="np-dropdown-item" data-value="parttime">파트타임</div>
                   <div class="np-dropdown-item" data-value="freelance">프리랜서</div>
+                  <div class="np-dropdown-item" data-value="project">프로젝트</div>
                 </div>
               </details>
             </div>
@@ -761,49 +774,21 @@
             <!-- 희망 연봉 -->
             <div class="flex flex-col gap-2">
               <span class="np-textfield-label">희망 연봉 <span class="font-normal text-neutral-400">(선택)</span></span>
-              <!-- 협의 체크박스 -->
-              <label class="np-checkbox mb-1">
-                <input type="checkbox" id="salary-negotiable" class="np-checkbox-input" onchange="toggleSalaryNegotiable(this)" />
-                <span class="np-checkbox-label">협의 — 연봉은 면접 후 협의</span>
-              </label>
-              <!-- 범위 선택 (협의 해제 시 표시) -->
-              <div id="salary-range-wrap" class="flex items-center gap-3">
-                <details class="np-dropdown flex-1" id="dd-salary-min">
-                  <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
-                    <span class="filter-label text-neutral-400">최소 연봉</span>
-                    <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
-                  </summary>
-                  <div class="np-dropdown-menu">
-                    <div class="np-dropdown-item" data-value="2000">2,000만 원</div>
-                    <div class="np-dropdown-item" data-value="2400">2,400만 원</div>
-                    <div class="np-dropdown-item" data-value="2800">2,800만 원</div>
-                    <div class="np-dropdown-item" data-value="3000">3,000만 원</div>
-                    <div class="np-dropdown-item" data-value="3200">3,200만 원</div>
-                    <div class="np-dropdown-item" data-value="3600">3,600만 원</div>
-                    <div class="np-dropdown-item" data-value="4000">4,000만 원</div>
-                    <div class="np-dropdown-item" data-value="4500">4,500만 원</div>
-                    <div class="np-dropdown-item" data-value="5000">5,000만 원</div>
-                  </div>
-                </details>
-                <span class="text-lg text-neutral-400 shrink-0">~</span>
-                <details class="np-dropdown flex-1" id="dd-salary-max">
-                  <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
-                    <span class="filter-label text-neutral-400">최대 연봉</span>
-                    <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
-                  </summary>
-                  <div class="np-dropdown-menu">
-                    <div class="np-dropdown-item" data-value="2400">2,400만 원</div>
-                    <div class="np-dropdown-item" data-value="2800">2,800만 원</div>
-                    <div class="np-dropdown-item" data-value="3000">3,000만 원</div>
-                    <div class="np-dropdown-item" data-value="3200">3,200만 원</div>
-                    <div class="np-dropdown-item" data-value="3600">3,600만 원</div>
-                    <div class="np-dropdown-item" data-value="4000">4,000만 원</div>
-                    <div class="np-dropdown-item" data-value="4500">4,500만 원</div>
-                    <div class="np-dropdown-item" data-value="5000">5,000만 원</div>
-                    <div class="np-dropdown-item" data-value="6000">6,000만 원 이상</div>
-                  </div>
-                </details>
-              </div>
+              <details class="np-dropdown w-full" id="dd-salary">
+                <summary class="np-btn np-btn-grey-stroke np-btn-md w-full justify-between">
+                  <span class="filter-label text-neutral-400">연봉 범위를 선택하세요</span>
+                  <i data-lucide="chevron-down" class="np-dropdown-chevron w-5 h-5 shrink-0"></i>
+                </summary>
+                <div class="np-dropdown-menu">
+                  <div class="np-dropdown-item" data-value="under2400">2,400만 원 이하</div>
+                  <div class="np-dropdown-item" data-value="2400-3000">2,400~3,000만 원</div>
+                  <div class="np-dropdown-item" data-value="3000-4000">3,000~4,000만 원</div>
+                  <div class="np-dropdown-item" data-value="4000-5000">4,000~5,000만 원</div>
+                  <div class="np-dropdown-item" data-value="over5000">5,000만 원 이상</div>
+                  <div class="np-dropdown-divider"></div>
+                  <div class="np-dropdown-item" data-value="negotiable">협의 — 면접 후 결정</div>
+                </div>
+              </details>
               <span class="text-base text-neutral-400">연봉은 매칭 공고 필터에 사용되며, 기업에는 공개되지 않습니다</span>
             </div>
 
@@ -910,10 +895,7 @@
         <p class="np-footer-info mt-3">© 2026 NextPartner. All rights reserved.</p>
       </div>
       <div class="flex items-center gap-3">
-        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
-          <path d="M16 2L28.7 9.5V24.5L16 32L3.3 24.5V9.5L16 2Z" fill="#ff7f65"/>
-          <path d="M11 10h2.5l5 12H16l-1.2-3H10l-1.2 3H6.5L11 10Zm2.8 7-1.8-4.5L10.2 17h3.6Z" fill="white"/>
-        </svg>
+        <img src="img/symbol.png" width="40" height="40" alt="NextPartner" />
         <div>
           <p class="text-base font-bold text-neutral-900 leading-tight">NextPartner</p>
           <p class="text-sm text-neutral-400 leading-tight">Senior Talent Marketplace</p>
@@ -1029,6 +1011,85 @@ function validateStep(n) {
 
   function markFirst(el) { if (!firstErrorEl) firstErrorEl = el; }
 
+  /* ── STEP 1: 기본 정보 ── */
+  if (n === 1) {
+    var nameInput = document.getElementById('name');
+    if (!nameInput.value.trim()) {
+      addInputError(nameInput, '이름을 입력해주세요');
+      markFirst(nameInput);
+    }
+
+    var genderChecked = document.querySelector('input[name="gender"]:checked');
+    if (!genderChecked) {
+      var genderWrap = document.querySelector('input[name="gender"]').closest('.flex.flex-col.gap-2');
+      addGroupError(genderWrap, '성별을 선택해주세요');
+      if (!firstErrorEl) markFirst(document.querySelector('input[name="gender"]'));
+    }
+
+    var birthdateInput = document.getElementById('birthdate');
+    var bdv = birthdateInput.value.replace(/\D/g, '');
+    if (!bdv) {
+      addInputError(birthdateInput, '생년월일을 입력해주세요');
+      markFirst(birthdateInput);
+    } else if (bdv.length !== 6) {
+      addInputError(birthdateInput, '생년월일 6자리를 입력해주세요 (예: 850312)');
+      markFirst(birthdateInput);
+    } else {
+      var mm = parseInt(bdv.slice(2,4));
+      var dd = parseInt(bdv.slice(4,6));
+      if (mm < 1 || mm > 12 || dd < 1 || dd > 31) {
+        addInputError(birthdateInput, '올바른 날짜를 입력해주세요');
+        markFirst(birthdateInput);
+      }
+    }
+
+    var phoneInput = document.getElementById('phone');
+    var phoneDigits = phoneInput.value.replace(/\D/g, '');
+    if (!phoneDigits) {
+      addInputError(phoneInput, '전화번호를 입력해주세요');
+      markFirst(phoneInput);
+    } else if (phoneDigits.length < 10) {
+      addInputError(phoneInput, '올바른 전화번호를 입력해주세요');
+      markFirst(phoneInput);
+    }
+
+    var emailInput = document.getElementById('email');
+    if (!emailInput.value.trim()) {
+      addInputError(emailInput, '이메일을 입력해주세요');
+      markFirst(emailInput);
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+      addInputError(emailInput, '이메일 주소를 확인해주세요. 예) example@naver.com');
+      markFirst(emailInput);
+    }
+
+    var pwInput = document.getElementById('password');
+    var pwv = pwInput.value;
+    var pwOk = pwv.length >= 8 && /[a-zA-Z]/.test(pwv) && /[0-9]/.test(pwv) && /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwv);
+    if (!pwv) {
+      addInputError(pwInput, '비밀번호를 입력해주세요');
+      markFirst(pwInput);
+    } else if (!pwOk) {
+      addInputError(pwInput, '비밀번호 조건을 모두 충족해주세요 (8자 이상, 영문·숫자·특수문자 포함)');
+      markFirst(pwInput);
+    }
+
+    var pcInput = document.getElementById('password-confirm');
+    if (!pcInput.value) {
+      addInputError(pcInput, '비밀번호 확인을 입력해주세요');
+      markFirst(pcInput);
+    } else if (pwInput.value !== pcInput.value) {
+      addInputError(pcInput, '비밀번호가 일치하지 않습니다');
+      markFirst(pcInput);
+    }
+
+    var agreeItems = document.querySelectorAll('.agree-item');
+    if (!agreeItems[0].checked || !agreeItems[1].checked) {
+      var agreeWrap = agreeItems[0].closest('.bg-neutral-50');
+      addGroupError(agreeWrap, '이용약관 및 개인정보 수집·이용에 동의해주세요');
+      markFirst(agreeItems[0]);
+    }
+  }
+
   /* ── STEP 2: 학력 ── */
   if (n === 2) {
     var eduChecked = document.querySelector('input[name="edu-level"]:checked');
@@ -1041,6 +1102,16 @@ function validateStep(n) {
       if (!schoolInput.value.trim()) {
         addInputError(schoolInput, '학교명을 입력해주세요');
         markFirst(schoolInput);
+      }
+      var majorInput = document.getElementById('major');
+      if (!majorInput.value.trim()) {
+        addInputError(majorInput, '전공을 입력해주세요');
+        markFirst(majorInput);
+      }
+      var startYearSel = document.getElementById('edu-start-year');
+      if (!startYearSel.value) {
+        startYearSel.classList.add('np-textfield-error');
+        markFirst(startYearSel);
       }
       var ddStatus = document.getElementById('dd-edu-status');
       var statusLabel = ddStatus.querySelector('.filter-label');
@@ -1459,14 +1530,6 @@ function toggleJobTag(btn) {
   updateStep5Summary();
 }
 
-/* ── 희망 연봉 협의 토글 ── */
-function toggleSalaryNegotiable(cb) {
-  var wrap = document.getElementById('salary-range-wrap');
-  wrap.style.opacity = cb.checked ? '0.3' : '';
-  wrap.style.pointerEvents = cb.checked ? 'none' : '';
-  updateStep5Summary();
-}
-
 /* ── STEP5 요약 업데이트 ── */
 function updateStep5Summary() {
   document.getElementById('summary-jobs').textContent =
@@ -1480,21 +1543,8 @@ function updateStep5Summary() {
   document.getElementById('summary-region').textContent =
     regLabel && !regLabel.classList.contains('text-neutral-400') ? regLabel.textContent.trim() : '—';
 
-  var negotiable = document.getElementById('salary-negotiable').checked;
-  var minLabel = document.querySelector('#dd-salary-min .filter-label');
-  var maxLabel = document.querySelector('#dd-salary-max .filter-label');
-  var minTxt = minLabel && !minLabel.classList.contains('text-neutral-400') ? minLabel.textContent.trim() : '';
-  var maxTxt = maxLabel && !maxLabel.classList.contains('text-neutral-400') ? maxLabel.textContent.trim() : '';
-  var salaryText = '—';
-  if (negotiable) {
-    salaryText = '협의';
-  } else if (minTxt && maxTxt) {
-    salaryText = minTxt + ' ~ ' + maxTxt;
-  } else if (minTxt) {
-    salaryText = minTxt + ' 이상';
-  } else if (maxTxt) {
-    salaryText = maxTxt + ' 이하';
-  }
+  var salaryLabel = document.querySelector('#dd-salary .filter-label');
+  var salaryText = salaryLabel && !salaryLabel.classList.contains('text-neutral-400') ? salaryLabel.textContent.trim() : '—';
   document.getElementById('summary-salary').textContent = salaryText;
 }
 
@@ -1568,6 +1618,8 @@ document.querySelectorAll('.step-nav-btn').forEach(function(btn) {
 
 /* ── 초기화 ── */
 populateYearSelects();
+addCareerCard();
+addCertCard();
 updateStepUI();
 lucide.createIcons({ nameAttr: 'data-lucide' });
 </script>
