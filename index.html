@@ -1056,11 +1056,147 @@ var stepContextMsgs = [
 /* ── 단계 이동 ── */
 function goToStep(n) {
   if (n < 1 || n > 5) return;
+  if (n > currentStep && !validateStep(currentStep)) return;
+  clearAllErrors();
   document.getElementById('step-' + currentStep).classList.add('hidden');
   currentStep = n;
   document.getElementById('step-' + n).classList.remove('hidden');
   updateStepUI();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 유효성 검사 ── */
+function clearAllErrors() {
+  document.querySelectorAll('.np-textfield-error').forEach(function(el) {
+    el.classList.remove('np-textfield-error');
+  });
+  document.querySelectorAll('.val-err').forEach(function(el) { el.remove(); });
+  document.querySelectorAll('[data-err-border]').forEach(function(el) {
+    el.style.borderColor = '';
+    el.removeAttribute('data-err-border');
+  });
+}
+
+function addInputError(input, msg) {
+  input.classList.add('np-textfield-error');
+  var wrap = input.closest('.np-textfield-wrap') || input.parentElement;
+  if (!wrap.querySelector('.val-err')) {
+    var hint = document.createElement('p');
+    hint.className = 'np-textfield-hint-error val-err';
+    wrap.appendChild(hint);
+  }
+  wrap.querySelector('.val-err').textContent = msg;
+}
+
+function addGroupError(container, msg) {
+  if (!container.querySelector('.val-err')) {
+    var hint = document.createElement('p');
+    hint.className = 'np-textfield-hint-error val-err mt-1';
+    container.appendChild(hint);
+  }
+  container.querySelector('.val-err').textContent = msg;
+}
+
+function addDropdownError(ddEl, msg) {
+  var summary = ddEl.querySelector('summary');
+  summary.style.borderColor = '#f44336';
+  summary.setAttribute('data-err-border', '1');
+  var wrap = ddEl.parentElement;
+  if (!wrap.querySelector('.val-err')) {
+    var hint = document.createElement('p');
+    hint.className = 'np-textfield-hint-error val-err mt-1';
+    wrap.appendChild(hint);
+  }
+  wrap.querySelector('.val-err').textContent = msg;
+}
+
+function validateStep(n) {
+  clearAllErrors();
+  var firstErrorEl = null;
+
+  function markFirst(el) { if (!firstErrorEl) firstErrorEl = el; }
+
+  /* ── STEP 2: 학력 ── */
+  if (n === 2) {
+    var eduChecked = document.querySelector('input[name="edu-level"]:checked');
+    if (!eduChecked) {
+      var radioWrap = document.querySelector('input[name="edu-level"]').closest('.flex.flex-col.gap-2');
+      addGroupError(radioWrap, '최종학력을 선택해주세요');
+      markFirst(document.querySelector('input[name="edu-level"]'));
+    } else if (eduChecked.value === 'college' || eduChecked.value === 'grad') {
+      var schoolInput = document.getElementById('school-name');
+      if (!schoolInput.value.trim()) {
+        addInputError(schoolInput, '학교명을 입력해주세요');
+        markFirst(schoolInput);
+      }
+      var ddStatus = document.getElementById('dd-edu-status');
+      var statusLabel = ddStatus.querySelector('.filter-label');
+      if (statusLabel.classList.contains('text-neutral-400')) {
+        addDropdownError(ddStatus, '졸업구분을 선택해주세요');
+        markFirst(ddStatus.querySelector('summary'));
+      }
+    }
+  }
+
+  /* ── STEP 3: 경력 ── */
+  if (n === 3) {
+    if (!document.getElementById('no-career').checked) {
+      document.querySelectorAll('.career-card').forEach(function(card) {
+        var textInputs = card.querySelectorAll('input[type="text"].np-textfield');
+        var companyInput = textInputs[0];
+        var jobInput = textInputs[textInputs.length - 1]; // 담당 직무 (마지막 텍스트 입력)
+
+        if (!companyInput.value.trim()) {
+          addInputError(companyInput, '회사명을 입력해주세요');
+          markFirst(companyInput);
+        }
+        if (jobInput !== companyInput && !jobInput.value.trim()) {
+          addInputError(jobInput, '담당 직무를 입력해주세요');
+          markFirst(jobInput);
+        }
+
+        var selects = card.querySelectorAll('select');
+        // 시작 년도(0), 시작 월(1), 종료 년도(2), 종료 월(3)
+        if (!selects[0].value) {
+          selects[0].classList.add('np-textfield-error');
+          markFirst(selects[0]);
+        }
+        if (!selects[1].value) {
+          selects[1].classList.add('np-textfield-error');
+          markFirst(selects[1]);
+        }
+        var isCurrentJob = card.querySelector('.current-job-cb');
+        if (isCurrentJob && !isCurrentJob.checked) {
+          if (!selects[2].value) {
+            selects[2].classList.add('np-textfield-error');
+            markFirst(selects[2]);
+          }
+          if (!selects[3].value) {
+            selects[3].classList.add('np-textfield-error');
+            markFirst(selects[3]);
+          }
+        }
+      });
+    }
+  }
+
+  /* ── STEP 4: 자격증 ── */
+  if (n === 4) {
+    if (!document.getElementById('no-cert').checked) {
+      document.querySelectorAll('.cert-card').forEach(function(card) {
+        var certInput = card.querySelector('input[type="text"].np-textfield');
+        if (certInput && !certInput.value.trim()) {
+          addInputError(certInput, '자격증명을 입력해주세요');
+          markFirst(certInput);
+        }
+      });
+    }
+  }
+
+  if (firstErrorEl) {
+    firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return !firstErrorEl;
 }
 
 function updateStepUI() {
@@ -1466,7 +1602,33 @@ document.addEventListener('click', function(e) {
     label.classList.remove('text-neutral-400');
   }
   dd.open = false;
+  /* 드롭다운 선택 시 해당 에러 해제 */
+  var summary = dd.querySelector('summary');
+  if (summary) { summary.style.borderColor = ''; summary.removeAttribute('data-err-border'); }
+  var wrap = dd.parentElement;
+  if (wrap) { var h = wrap.querySelector('.val-err'); if (h) h.remove(); }
   updateStep5Summary();
+});
+
+/* 입력 시 해당 필드 에러 해제 */
+document.addEventListener('input', function(e) {
+  var el = e.target;
+  if (el.classList.contains('np-textfield-error')) {
+    el.classList.remove('np-textfield-error');
+    var wrap = el.closest('.np-textfield-wrap') || el.parentElement;
+    var hint = wrap && wrap.querySelector('.val-err');
+    if (hint) hint.remove();
+  }
+});
+document.addEventListener('change', function(e) {
+  var el = e.target;
+  if (el.tagName === 'SELECT' && el.classList.contains('np-textfield-error')) {
+    el.classList.remove('np-textfield-error');
+  }
+  if (el.tagName === 'INPUT' && el.type === 'radio' && el.name === 'edu-level') {
+    var wrap = el.closest('.flex.flex-col.gap-2');
+    if (wrap) { var h = wrap.querySelector('.val-err'); if (h) h.remove(); }
+  }
 });
 
 /* 바깥 클릭 시 드롭다운 닫기 */
