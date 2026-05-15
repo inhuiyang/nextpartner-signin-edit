@@ -221,68 +221,73 @@
   <div class="flex flex-col md:flex-row gap-6 lg:gap-10 items-start">
 
     <!-- ── 좌측 사이드 패널 (md 이상) ── -->
-    <aside class="hidden md:flex flex-col gap-3 w-56 lg:w-64 shrink-0 sticky top-24">
+    <aside class="hidden md:block w-56 lg:w-64 shrink-0 sticky top-24">
+      <div class="bg-neutral-0 rounded-card border border-neutral-200 p-6 flex flex-col gap-4">
 
-      <!-- 서비스 설명 -->
-      <div class="bg-primary-50 rounded-card p-5 mb-2">
-        <p class="text-lg font-bold text-primary-500 mb-1">이력서 자동 반영</p>
-        <p class="text-base text-neutral-600 leading-relaxed">입력하신 정보는 AI 이력서에 바로 반영됩니다. 정확하게 입력할수록 더 좋은 공고를 추천받을 수 있어요.</p>
-      </div>
-
-      <!-- 스텝 목록 -->
-      <nav class="flex flex-col gap-1" aria-label="회원가입 단계">
-        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="1">
-          <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">1</span>
-          <div class="flex flex-col">
-            <span class="text-lg font-bold">기본 정보</span>
-            <span class="step-desc text-base text-neutral-400">이름·이메일·비밀번호</span>
-          </div>
-        </button>
-        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="2">
-          <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">2</span>
-          <div class="flex flex-col">
-            <span class="text-lg font-bold">학력</span>
-            <span class="step-desc text-base text-neutral-400">최종학력·전공</span>
-          </div>
-        </button>
-        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="3">
-          <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">3</span>
-          <div class="flex flex-col">
-            <span class="text-lg font-bold">경력</span>
-            <span class="step-desc text-base text-neutral-400">회사·직무·재직기간</span>
-          </div>
-        </button>
-        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="4">
-          <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">4</span>
-          <div class="flex flex-col">
-            <span class="text-lg font-bold">자격증</span>
-            <span class="step-desc text-base text-neutral-400">보유 자격증</span>
-          </div>
-        </button>
-        <button class="step-nav-btn flex items-center gap-3 px-4 py-3 rounded-button text-left transition-colors duration-120" data-step="5">
-          <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">5</span>
-          <div class="flex flex-col">
-            <span class="text-lg font-bold">희망 조건</span>
-            <span class="step-desc text-base text-neutral-400">직무·지역·연봉</span>
-          </div>
-        </button>
-      </nav>
-
-      <!-- 진행률 -->
-      <div class="mt-2 px-1">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-base text-neutral-400" id="sidebar-progress-text">20% 완료</span>
-          <span class="text-base text-neutral-400" id="sidebar-remain-text">4단계 남았습니다</span>
+        <!-- 서비스 설명 -->
+        <div class="bg-primary-50 rounded-card p-4">
+          <p class="text-lg font-bold text-primary-500 mb-1">이력서 자동 반영</p>
+          <p class="text-base text-neutral-600 leading-relaxed">입력하신 회원가입 정보는 AI 이력서에 바로 반영됩니다. 정확하게 입력할수록 더 좋은 공고를 추천받을 수 있어요.</p>
         </div>
-        <div class="w-full h-2 bg-neutral-200 rounded-pill overflow-hidden">
-          <div class="h-full bg-primary-500 rounded-pill transition-all duration-300" id="sidebar-progress-bar" style="width:20%"></div>
-        </div>
-      </div>
 
-      <!-- 맥락 메시지 -->
-      <p class="text-base text-neutral-500 leading-relaxed px-1 mt-1" id="sidebar-context-msg">
-        기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.
-      </p>
+        <!-- 스텝 목록 -->
+        <nav class="flex flex-col gap-1" aria-label="회원가입 단계">
+          <button class="step-nav-btn flex items-center gap-3 px-3 py-3 rounded-button text-left transition-colors duration-120" data-step="1">
+            <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">1</span>
+            <div class="flex flex-col">
+              <span class="text-lg font-bold">기본 정보</span>
+              <span class="step-desc text-base text-neutral-400">이름·이메일·비밀번호</span>
+            </div>
+          </button>
+          <button class="step-nav-btn flex items-center gap-3 px-3 py-3 rounded-button text-left transition-colors duration-120" data-step="2">
+            <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">2</span>
+            <div class="flex flex-col">
+              <span class="text-lg font-bold">학력</span>
+              <span class="step-desc text-base text-neutral-400">최종학력·전공</span>
+            </div>
+          </button>
+          <button class="step-nav-btn flex items-center gap-3 px-3 py-3 rounded-button text-left transition-colors duration-120" data-step="3">
+            <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">3</span>
+            <div class="flex flex-col">
+              <span class="text-lg font-bold">경력</span>
+              <span class="step-desc text-base text-neutral-400">회사·직무·재직기간</span>
+            </div>
+          </button>
+          <button class="step-nav-btn flex items-center gap-3 px-3 py-3 rounded-button text-left transition-colors duration-120" data-step="4">
+            <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">4</span>
+            <div class="flex flex-col">
+              <span class="text-lg font-bold">자격증</span>
+              <span class="step-desc text-base text-neutral-400">보유 자격증</span>
+            </div>
+          </button>
+          <button class="step-nav-btn flex items-center gap-3 px-3 py-3 rounded-button text-left transition-colors duration-120" data-step="5">
+            <span class="step-circle flex items-center justify-center w-8 h-8 rounded-full text-lg font-bold shrink-0 transition-colors duration-120">5</span>
+            <div class="flex flex-col">
+              <span class="text-lg font-bold">희망 조건</span>
+              <span class="step-desc text-base text-neutral-400">직무·지역·연봉</span>
+            </div>
+          </button>
+        </nav>
+
+        <div class="np-divider"></div>
+
+        <!-- 진행률 -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-base text-neutral-400" id="sidebar-progress-text">20% 완료</span>
+            <span class="text-base text-neutral-400" id="sidebar-remain-text">4단계 남았습니다</span>
+          </div>
+          <div class="w-full h-2 bg-neutral-200 rounded-pill overflow-hidden">
+            <div class="h-full bg-primary-500 rounded-pill transition-all duration-300" id="sidebar-progress-bar" style="width:20%"></div>
+          </div>
+        </div>
+
+        <!-- 맥락 메시지 -->
+        <p class="text-base text-neutral-500 leading-relaxed" id="sidebar-context-msg">
+          기본 정보를 입력하면 이력서 기본 정보란이 자동으로 채워집니다.
+        </p>
+
+      </div>
     </aside>
 
     <!-- ── 우측 폼 영역 ── -->
