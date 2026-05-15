@@ -590,62 +590,7 @@
           </div>
 
           <!-- 경력 카드 목록 -->
-          <div id="career-list" class="flex flex-col gap-5 mb-5">
-            <!-- 카드는 JS로 추가됨, 초기 1개 표시 -->
-            <div class="career-card bg-neutral-50 rounded-card border border-neutral-200 p-5 flex flex-col gap-4">
-              <div class="flex items-center justify-between mb-1">
-                <p class="text-lg font-bold text-neutral-800">경력 1</p>
-                <button class="np-btn np-btn-ghost" style="padding:4px 8px;height:auto;font-size:14px;" onclick="removeCareerCard(this)">
-                  <i data-lucide="x" style="width:16px;height:16px;"></i>
-                  삭제
-                </button>
-              </div>
-
-              <div class="np-textfield-wrap">
-                <label class="np-textfield-label">회사명 *</label>
-                <input type="text" class="np-textfield" placeholder="예) (주)넥스트파트너" />
-              </div>
-
-              <div class="np-textfield-wrap">
-                <label class="np-textfield-label">직급 <span class="font-normal text-neutral-400">(선택)</span></label>
-                <input type="text" class="np-textfield" placeholder="예) 과장, 팀장, 대리, 사원" />
-              </div>
-
-              <div class="np-textfield-wrap">
-                <label class="np-textfield-label">담당 직무 *</label>
-                <input type="text" class="np-textfield" placeholder="예) 영업 관리, IT 개발" />
-              </div>
-
-              <!-- 기간 -->
-              <div class="flex flex-col gap-2">
-                <span class="np-textfield-label">재직 기간 *</span>
-                <div class="flex items-center gap-3">
-                  <div class="flex gap-2 flex-1">
-                    <select class="np-textfield flex-1" style="cursor:pointer" aria-label="시작 년도">
-                      <option value="">년도</option>
-                    </select>
-                    <select class="np-textfield w-24" style="cursor:pointer" aria-label="시작 월">
-                      <option value="">월</option>
-                    </select>
-                  </div>
-                  <span class="text-base text-neutral-400 shrink-0">~</span>
-                  <div class="flex gap-2 flex-1 end-date-group">
-                    <select class="np-textfield flex-1" style="cursor:pointer" aria-label="종료 년도">
-                      <option value="">년도</option>
-                    </select>
-                    <select class="np-textfield w-24" style="cursor:pointer" aria-label="종료 월">
-                      <option value="">월</option>
-                    </select>
-                  </div>
-                </div>
-                <label class="np-checkbox mt-1">
-                  <input type="checkbox" class="np-checkbox-input current-job-cb" onchange="toggleCurrentJob(this)" />
-                  <span class="np-checkbox-label">현재 재직 중</span>
-                </label>
-              </div>
-
-            </div>
-          </div>
+          <div id="career-list" class="flex flex-col gap-5 mb-5"></div>
 
           <!-- 경력 추가 버튼 -->
           <button class="np-btn np-btn-secondary np-btn-md w-full mb-8" id="add-career-btn" onclick="addCareerCard()">
@@ -694,39 +639,7 @@
           </div>
 
           <!-- 자격증 카드 목록 -->
-          <div id="cert-list" class="flex flex-col gap-5 mb-5">
-            <div class="cert-card bg-neutral-50 rounded-card border border-neutral-200 p-5 flex flex-col gap-4">
-              <div class="flex items-center justify-between mb-1">
-                <p class="text-lg font-bold text-neutral-800">자격증 1</p>
-                <button class="np-btn np-btn-ghost" style="padding:4px 8px;height:auto;font-size:14px;" onclick="removeCertCard(this)">
-                  <i data-lucide="x" style="width:16px;height:16px;"></i>
-                  삭제
-                </button>
-              </div>
-
-              <div class="np-textfield-wrap">
-                <label class="np-textfield-label">자격증명 *</label>
-                <input type="text" class="np-textfield" placeholder="예) 운전면허, 정보처리기사, 요양보호사" />
-              </div>
-
-              <div class="np-textfield-wrap">
-                <label class="np-textfield-label">발급기관 <span class="font-normal text-neutral-400">(선택)</span></label>
-                <input type="text" class="np-textfield" placeholder="예) 한국산업인력공단, 도로교통공단" />
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <span class="np-textfield-label">취득일 <span class="font-normal text-neutral-400">(선택)</span></span>
-                <div class="flex gap-3">
-                  <select class="np-textfield flex-1" style="cursor:pointer" aria-label="취득 년도">
-                    <option value="">년도</option>
-                  </select>
-                  <select class="np-textfield w-28" style="cursor:pointer" aria-label="취득 월">
-                    <option value="">월</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div id="cert-list" class="flex flex-col gap-5 mb-5"></div>
 
           <!-- 자격증 추가 버튼 -->
           <button class="np-btn np-btn-secondary np-btn-md w-full mb-8" id="add-cert-btn" onclick="addCertCard()">
@@ -1140,41 +1053,28 @@ function validateStep(n) {
 
   /* ── STEP 3: 경력 ── */
   if (n === 3) {
-    if (!document.getElementById('no-career').checked) {
-      document.querySelectorAll('.career-card').forEach(function(card) {
-        var textInputs = card.querySelectorAll('input[type="text"].np-textfield');
-        var companyInput = textInputs[0];
-        var jobInput = textInputs[textInputs.length - 1]; // 담당 직무 (마지막 텍스트 입력)
-
-        if (!companyInput.value.trim()) {
-          addInputError(companyInput, '회사명을 입력해주세요');
-          markFirst(companyInput);
-        }
-        if (jobInput !== companyInput && !jobInput.value.trim()) {
-          addInputError(jobInput, '담당 직무를 입력해주세요');
-          markFirst(jobInput);
-        }
-
-        var selects = card.querySelectorAll('select');
-        // 시작 년도(0), 시작 월(1), 종료 년도(2), 종료 월(3)
-        if (!selects[0].value) {
-          selects[0].classList.add('np-textfield-error');
-          markFirst(selects[0]);
-        }
-        if (!selects[1].value) {
-          selects[1].classList.add('np-textfield-error');
-          markFirst(selects[1]);
-        }
-        var isCurrentJob = card.querySelector('.current-job-cb');
-        if (isCurrentJob && !isCurrentJob.checked) {
-          if (!selects[2].value) {
-            selects[2].classList.add('np-textfield-error');
-            markFirst(selects[2]);
-          }
-          if (!selects[3].value) {
-            selects[3].classList.add('np-textfield-error');
-            markFirst(selects[3]);
-          }
+    var noCareerCk = document.getElementById('no-career').checked;
+    var cCards = document.querySelectorAll('.career-card');
+    if (!noCareerCk && cCards.length === 0) {
+      var acBtn = document.getElementById('add-career-btn');
+      var acHint = document.createElement('p');
+      acHint.className = 'np-textfield-hint-error val-err mt-2';
+      acHint.textContent = "경력을 추가하거나 '경력 없음'을 체크해주세요";
+      acBtn.insertAdjacentElement('afterend', acHint);
+      markFirst(acBtn);
+    } else if (!noCareerCk) {
+      cCards.forEach(function(card) {
+        var ti = card.querySelectorAll('input[type="text"].np-textfield');
+        if (!ti[0].value.trim()) { addInputError(ti[0], '회사명을 입력해주세요'); markFirst(ti[0]); }
+        if (ti[1] && !ti[1].value.trim()) { addInputError(ti[1], '직급을 입력해주세요'); markFirst(ti[1]); }
+        if (ti[2] && !ti[2].value.trim()) { addInputError(ti[2], '담당 직무를 입력해주세요'); markFirst(ti[2]); }
+        var sel = card.querySelectorAll('select');
+        if (!sel[0].value) { sel[0].classList.add('np-textfield-error'); markFirst(sel[0]); }
+        if (!sel[1].value) { sel[1].classList.add('np-textfield-error'); markFirst(sel[1]); }
+        var isCur = card.querySelector('.current-job-cb');
+        if (isCur && !isCur.checked) {
+          if (!sel[2].value) { sel[2].classList.add('np-textfield-error'); markFirst(sel[2]); }
+          if (!sel[3].value) { sel[3].classList.add('np-textfield-error'); markFirst(sel[3]); }
         }
       });
     }
@@ -1182,13 +1082,23 @@ function validateStep(n) {
 
   /* ── STEP 4: 자격증 ── */
   if (n === 4) {
-    if (!document.getElementById('no-cert').checked) {
-      document.querySelectorAll('.cert-card').forEach(function(card) {
-        var certInput = card.querySelector('input[type="text"].np-textfield');
-        if (certInput && !certInput.value.trim()) {
-          addInputError(certInput, '자격증명을 입력해주세요');
-          markFirst(certInput);
-        }
+    var noCertCk = document.getElementById('no-cert').checked;
+    var ctCards = document.querySelectorAll('.cert-card');
+    if (!noCertCk && ctCards.length === 0) {
+      var acCertBtn = document.getElementById('add-cert-btn');
+      var acCertHint = document.createElement('p');
+      acCertHint.className = 'np-textfield-hint-error val-err mt-2';
+      acCertHint.textContent = "자격증을 추가하거나 '자격증 없음'을 체크해주세요";
+      acCertBtn.insertAdjacentElement('afterend', acCertHint);
+      markFirst(acCertBtn);
+    } else if (!noCertCk) {
+      ctCards.forEach(function(card) {
+        var ti = card.querySelectorAll('input[type="text"].np-textfield');
+        if (!ti[0].value.trim()) { addInputError(ti[0], '자격증명을 입력해주세요'); markFirst(ti[0]); }
+        if (ti[1] && !ti[1].value.trim()) { addInputError(ti[1], '발급기관을 입력해주세요'); markFirst(ti[1]); }
+        var sel = card.querySelectorAll('select');
+        if (!sel[0].value) { sel[0].classList.add('np-textfield-error'); markFirst(sel[0]); }
+        if (!sel[1].value) { sel[1].classList.add('np-textfield-error'); markFirst(sel[1]); }
       });
     }
   }
@@ -1383,7 +1293,7 @@ function toggleNoCareer(cb) {
 }
 
 /* ── 경력 카드 추가/삭제 ── */
-var careerCount = 1;
+var careerCount = 0;
 function addCareerCard() {
   careerCount++;
   var html = buildCareerCard(careerCount);
@@ -1400,7 +1310,7 @@ function buildCareerCard(n) {
     '<i data-lucide="x" style="width:16px;height:16px;"></i> 삭제</button></div>' +
     '<div class="np-textfield-wrap"><label class="np-textfield-label">회사명 *</label>' +
     '<input type="text" class="np-textfield" placeholder="예) (주)넥스트파트너" /></div>' +
-    '<div class="np-textfield-wrap"><label class="np-textfield-label">직급 <span class=\'font-normal text-neutral-400\'>(선택)</span></label>' +
+    '<div class="np-textfield-wrap"><label class="np-textfield-label">직급 *</label>' +
     '<input type="text" class="np-textfield" placeholder="예) 과장, 팀장, 대리, 사원" /></div>' +
     '<div class="np-textfield-wrap"><label class="np-textfield-label">담당 직무 *</label>' +
     '<input type="text" class="np-textfield" placeholder="예) 영업 관리, IT 개발" /></div>' +
@@ -1457,7 +1367,7 @@ function toggleNoCert(cb) {
 }
 
 /* ── 자격증 카드 추가/삭제 ── */
-var certCount = 1;
+var certCount = 0;
 function addCertCard() {
   certCount++;
   var html = buildCertCard(certCount);
@@ -1474,9 +1384,9 @@ function buildCertCard(n) {
     '<i data-lucide="x" style="width:16px;height:16px;"></i> 삭제</button></div>' +
     '<div class="np-textfield-wrap"><label class="np-textfield-label">자격증명 *</label>' +
     '<input type="text" class="np-textfield" placeholder="예) 운전면허, 정보처리기사, 요양보호사" /></div>' +
-    '<div class="np-textfield-wrap"><label class="np-textfield-label">발급기관 <span class="font-normal text-neutral-400">(선택)</span></label>' +
+    '<div class="np-textfield-wrap"><label class="np-textfield-label">발급기관 *</label>' +
     '<input type="text" class="np-textfield" placeholder="예) 한국산업인력공단, 도로교통공단" /></div>' +
-    '<div class="flex flex-col gap-2"><span class="np-textfield-label">취득일 <span class="font-normal text-neutral-400">(선택)</span></span>' +
+    '<div class="flex flex-col gap-2"><span class="np-textfield-label">취득일 *</span>' +
     '<div class="flex gap-3"><select class="np-textfield flex-1" style="cursor:pointer" aria-label="취득 년도"><option value="">년도</option></select>' +
     '<select class="np-textfield w-28" style="cursor:pointer" aria-label="취득 월"><option value="">월</option></select></div></div></div>';
 }
